@@ -185,7 +185,7 @@
     </div>
 
     <!-- GRAND ENTRANCE DOORS OVERLAY -->
-    <div id="entranceOverlay" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-slate-950 door-container">
+    <div id="entranceOverlay" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-slate-950 door-container transition-all duration-700">
         <!-- Left Door -->
         <div id="doorLeft" class="door-left absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/40 border-r-4 border-amber-500/60 flex items-center justify-end pr-4 sm:pr-12 shadow-2xl z-20">
             <div class="w-full max-w-md h-5/6 border-2 border-amber-500/30 rounded-lg p-6 flex flex-col justify-between bg-slate-900/50 relative overflow-hidden">
@@ -541,7 +541,6 @@
                 updateAudioUI(true);
             }).catch(err => {
                 console.log("Audio playback waiting for gesture fallback:", err);
-                // Web Audio Fallback if MP3 stream is blocked
                 startAudioSynth();
             });
         }
@@ -618,6 +617,8 @@
         function updateAutoScrollUI() {
             const icon = document.getElementById('autoScrollIcon');
             const text = document.getElementById('autoScrollStatusText');
+            if (!icon || !text) return;
+
             if (isAutoScrolling) {
                 icon.className = "fas fa-pause text-[11px]";
                 text.innerText = "Pause";
@@ -630,24 +631,38 @@
         function stepAutoScroll() {
             if (!isAutoScrolling) return;
 
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            
-            if (window.scrollY >= maxScroll - 5) {
+
+            if (currentScroll >= maxScroll - 2) {
                 // Loop gently back to top
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 setTimeout(() => {
                     if (isAutoScrolling) stepAutoScroll();
-                }, 2500);
+                }, 2000);
                 return;
             }
 
-            window.scrollBy(0, scrollSpeed);
+            window.scrollBy({
+                top: scrollSpeed,
+                behavior: 'instant'
+            });
+
             scrollAnimationFrame = requestAnimationFrame(stepAutoScroll);
         }
 
+        // Pause auto-scroll if user manually scrolls
+        window.addEventListener('wheel', () => {
+            if (isAutoScrolling) toggleAutoScroll();
+        }, { passive: true });
+
+        window.addEventListener('touchmove', () => {
+            if (isAutoScrolling) toggleAutoScroll();
+        }, { passive: true });
+
+
         /* 3. ENTRANCE DOOR UNLOCK LOGIC */
         function openInvitationDoors() {
-            // Trigger audio immediately on explicit gesture
             playAudio();
 
             const overlay = document.getElementById('entranceOverlay');
@@ -665,8 +680,9 @@
             setTimeout(() => {
                 overlay.style.pointerEvents = 'none';
                 overlay.style.opacity = '0';
+                overlay.style.display = 'none'; // Remove overlay from visual DOM completely
 
-                // Automatically start auto-scroll right after doors open
+                // Automatically start auto-scroll after doors open
                 if (!isAutoScrolling) {
                     toggleAutoScroll();
                 }
