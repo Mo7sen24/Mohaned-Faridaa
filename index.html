@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mohanad & Farida - Royal Wedding Invitation</title>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -13,13 +14,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700;900&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <!-- Custom CSS Styles -->
+    <!-- GSAP Animation Engine -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Custom Luxury CSS -->
     <style>
         :root {
             --gold-primary: #d4af37;
             --gold-light: #f3e5ab;
             --gold-dark: #aa7c11;
-            --navy-dark: #050a14;
+            --navy-dark: #030712;
         }
 
         body {
@@ -33,71 +38,59 @@
         .font-cursive { font-family: 'Great Vibes', 'Amiri', cursive; }
         .font-cinzel { font-family: 'Cinzel Decorative', 'Amiri', serif; }
 
-        /* Gold Gradient Text */
+        /* Animated Gold Metallic Text */
         .text-gold-gradient {
             background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa7c11 100%);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: shineGold 8s linear infinite;
         }
 
-        /* Glassmorphism Cards */
+        @keyframes shineGold {
+            to { background-position: 200% center; }
+        }
+
+        /* Ultra Premium Glassmorphic Cards */
         .glass-card {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(212, 175, 55, 0.35);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.1);
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.9), 0 0 15px rgba(212, 175, 55, 0.08);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+            transform-style: preserve-3d;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(212, 175, 55, 0.6);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.95), 0 0 25px rgba(212, 175, 55, 0.25);
         }
 
         /* 3D Door Perspective Setup */
         .door-container {
-            perspective: 2000px;
+            perspective: 2500px;
         }
 
         .door-left {
             transform-origin: left center;
-            transition: transform 2.2s cubic-bezier(0.7, 0, 0.2, 1);
+            transition: transform 2.5s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
         .door-right {
             transform-origin: right center;
-            transition: transform 2.2s cubic-bezier(0.7, 0, 0.2, 1);
+            transition: transform 2.5s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        .doors-open .door-left {
-            transform: rotateY(-110deg);
-        }
+        .doors-open .door-left { transform: rotateY(-115deg); }
+        .doors-open .door-right { transform: rotateY(115deg); }
 
-        .doors-open .door-right {
-            transform: rotateY(110deg);
-        }
-
-        /* RTL Door Adjustments */
         [dir="rtl"] .door-left { transform-origin: right center; }
         [dir="rtl"] .door-right { transform-origin: left center; }
-        [dir="rtl"] .doors-open .door-left { transform: rotateY(110deg); }
-        [dir="rtl"] .doors-open .door-right { transform: rotateY(-110deg); }
+        [dir="rtl"] .doors-open .door-left { transform: rotateY(115deg); }
+        [dir="rtl"] .doors-open .door-right { transform: rotateY(-115deg); }
 
-        /* Envelope Flying Animation */
-        @keyframes foldAndFly {
-            0% { transform: scale(1) translateY(0) rotate(0deg); opacity: 1; }
-            30% { transform: scale(0.9) translateY(20px) rotate(-5deg); }
-            100% { transform: scale(0.2) translateY(-1200px) rotate(25deg); opacity: 0; }
-        }
-
-        .animate-envelope-fly {
-            animation: foldAndFly 1.8s ease-in-out forwards;
-        }
-
-        /* Glowing Pulse Effect */
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.4), inset 0 0 15px rgba(212, 175, 55, 0.2); }
-            50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.8), inset 0 0 25px rgba(212, 175, 55, 0.5); }
-        }
-
-        .glow-pulse { animation: pulseGlow 3s infinite ease-in-out; }
-
-        /* Shimmer Button */
+        /* Royal Shimmer Button */
         @keyframes shimmer {
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
@@ -106,34 +99,34 @@
         .shimmer-btn {
             background: linear-gradient(90deg, #aa7c11 0%, #fcf6ba 50%, #aa7c11 100%);
             background-size: 200% 100%;
-            animation: shimmer 4s infinite linear;
+            animation: shimmer 3.5s infinite linear;
         }
 
-        /* Scroll Reveal Utility */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.9s ease-out;
+        /* Pulse Radial Light */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 25px rgba(212, 175, 55, 0.4), inset 0 0 15px rgba(212, 175, 55, 0.2); }
+            50% { box-shadow: 0 0 50px rgba(212, 175, 55, 0.8), inset 0 0 30px rgba(212, 175, 55, 0.5); }
         }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .glow-pulse { animation: pulseGlow 3s infinite ease-in-out; }
 
         /* Equalizer Animation */
         @keyframes eqBar {
             0%, 100% { height: 4px; }
             50% { height: 16px; }
         }
+        .eq-animating { animation: eqBar 0.8s infinite ease-in-out; }
 
-        .eq-animating {
-            animation: eqBar 0.8s infinite ease-in-out;
+        /* Envelope Flying Animation */
+        @keyframes foldAndFly {
+            0% { transform: scale(1) translateY(0) rotate(0deg); opacity: 1; }
+            30% { transform: scale(0.9) translateY(20px) rotate(-5deg); }
+            100% { transform: scale(0.2) translateY(-1200px) rotate(25deg); opacity: 0; }
         }
+        .animate-envelope-fly { animation: foldAndFly 1.8s ease-in-out forwards; }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #050a14; }
+        ::-webkit-scrollbar-track { background: #030712; }
         ::-webkit-scrollbar-thumb {
             background: #1e293b;
             border-radius: 4px;
@@ -142,7 +135,7 @@
         ::-webkit-scrollbar-thumb:hover { background: #d4af37; }
     </style>
 </head>
-<body class="relative min-h-screen text-slate-100 selection:bg-amber-500 selection:text-slate-950 pb-28 sm:pb-0">
+<body class="relative min-h-screen text-slate-100 selection:bg-amber-500 selection:text-slate-950 pb-28 sm:pb-0 overflow-x-hidden">
 
     <!-- Falling Petals & Gold Particles Canvas -->
     <canvas id="particlesCanvas" class="fixed inset-0 pointer-events-none z-10 w-full h-full"></canvas>
@@ -153,7 +146,7 @@
         <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b9812739.mp3?filename=romantic-piano-wedding-10118.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- FIXED CONTROLS BAR (MUSIC, AUTO-SCROLL, & LANGUAGE) -->
+    <!-- FIXED CONTROLS BAR -->
     <div id="topWidgetBar" class="fixed bottom-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:top-6 sm:bottom-auto sm:right-6 z-40 flex items-center gap-2 sm:gap-3 bg-slate-950/95 backdrop-blur-xl border border-amber-500/50 p-2 sm:p-2.5 rounded-full shadow-2xl max-w-[95vw] overflow-x-auto">
         
         <!-- LANGUAGE TOGGLE BUTTON -->
@@ -204,7 +197,7 @@
         <div id="doorLeft" class="door-left absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/40 border-r-4 border-amber-500/60 flex items-center justify-end pr-4 sm:pr-12 shadow-2xl z-20">
             <div class="w-full max-w-md h-5/6 border-2 border-amber-500/30 rounded-lg p-6 flex flex-col justify-between bg-slate-900/50 relative overflow-hidden">
                 <div class="w-full h-full border border-amber-500/20 rounded flex items-center justify-center">
-                    <i class="fas fa-crown text-amber-500/20 text-6xl"></i>
+                    <i class="fas fa-crown text-amber-500/20 text-7xl"></i>
                 </div>
             </div>
         </div>
@@ -213,7 +206,7 @@
         <div id="doorRight" class="door-right absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-slate-950 via-slate-900 to-amber-950/40 border-l-4 border-amber-500/60 flex items-center justify-start pl-4 sm:pl-12 shadow-2xl z-20">
             <div class="w-full max-w-md h-5/6 border-2 border-amber-500/30 rounded-lg p-6 flex flex-col justify-between bg-slate-900/50 relative overflow-hidden">
                 <div class="w-full h-full border border-amber-500/20 rounded flex items-center justify-center">
-                    <i class="fas fa-heart text-amber-500/20 text-6xl"></i>
+                    <i class="fas fa-heart text-amber-500/20 text-7xl"></i>
                 </div>
             </div>
         </div>
@@ -239,7 +232,7 @@
 
         <!-- HERO SECTION -->
         <section class="min-h-screen flex flex-col items-center justify-center text-center px-4 py-20 relative overflow-hidden">
-            <div class="max-w-4xl mx-auto z-10">
+            <div class="max-w-4xl mx-auto z-10 gsap-hero">
                 <div class="inline-block mb-4 px-6 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs sm:text-sm tracking-[0.3em] uppercase" data-i18n="heroSubtitle">
                     The Wedding Celebration Of
                 </div>
@@ -285,7 +278,7 @@
 
         <!-- OUR LOVE STORY SECTION -->
         <section id="our-story" class="py-24 px-4 max-w-5xl mx-auto relative">
-            <div class="text-center mb-16 reveal">
+            <div class="text-center mb-16 gsap-reveal">
                 <h2 class="font-cursive text-5xl sm:text-6xl text-amber-300 mb-2" data-i18n="storyTitle">Our Love Story</h2>
                 <p class="font-cinzel text-xs sm:text-sm tracking-[0.3em] uppercase text-slate-400" data-i18n="storySubtitle">Two Souls, One Journey</p>
                 <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-4"></div>
@@ -293,12 +286,12 @@
 
             <div class="relative border-l-2 border-amber-500/30 rtl:border-l-0 rtl:border-r-2 ml-4 md:ml-0 rtl:mr-4 rtl:md:mr-0 md:mx-auto md:max-w-3xl space-y-12">
                 <!-- Story Item 1 -->
-                <div class="relative pl-8 rtl:pl-0 rtl:pr-8 md:pl-0 md:rtl:pr-0 md:flex md:items-center group reveal">
+                <div class="relative pl-8 rtl:pl-0 rtl:pr-8 md:pl-0 md:rtl:pr-0 md:flex md:items-center group gsap-reveal">
                     <div class="absolute -left-[17px] rtl:-right-[17px] md:left-1/2 md:-translate-x-1/2 rtl:md:translate-x-1/2 top-0 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-300 z-10 shadow-lg">
                         <i class="fas fa-compass text-xs"></i>
                     </div>
                     <div class="md:w-1/2 md:pr-12 md:rtl:pr-0 md:rtl:pl-12 md:text-right md:rtl:text-left">
-                        <div class="glass-card p-6 rounded-2xl hover:border-amber-400/50 transition-all">
+                        <div class="glass-card p-6 rounded-2xl hover:border-amber-400/50">
                             <span class="text-amber-400 font-cinzel text-xs font-bold tracking-widest uppercase" data-i18n="s1Date">Spring 2022</span>
                             <h3 class="font-serif-title text-xl text-amber-200 font-semibold my-1" data-i18n="s1Title">First Glance</h3>
                             <p class="text-slate-300 text-sm leading-relaxed" data-i18n="s1Desc">
@@ -309,12 +302,12 @@
                 </div>
 
                 <!-- Story Item 2 -->
-                <div class="relative pl-8 rtl:pl-0 rtl:pr-8 md:pl-0 md:rtl:pr-0 md:flex md:items-center md:flex-row-reverse group reveal">
+                <div class="relative pl-8 rtl:pl-0 rtl:pr-8 md:pl-0 md:rtl:pr-0 md:flex md:items-center md:flex-row-reverse group gsap-reveal">
                     <div class="absolute -left-[17px] rtl:-right-[17px] md:left-1/2 md:-translate-x-1/2 rtl:md:translate-x-1/2 top-0 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-300 z-10 shadow-lg">
                         <i class="fas fa-gem text-xs"></i>
                     </div>
                     <div class="md:w-1/2 md:pl-12 md:rtl:pl-0 md:rtl:pr-12 md:text-left md:rtl:text-right">
-                        <div class="glass-card p-6 rounded-2xl hover:border-amber-400/50 transition-all">
+                        <div class="glass-card p-6 rounded-2xl hover:border-amber-400/50">
                             <span class="text-amber-400 font-cinzel text-xs font-bold tracking-widest uppercase" data-i18n="s2Date">Autumn 2025</span>
                             <h3 class="font-serif-title text-xl text-amber-200 font-semibold my-1" data-i18n="s2Title">The Proposal</h3>
                             <p class="text-slate-300 text-sm leading-relaxed" data-i18n="s2Desc">
@@ -325,12 +318,12 @@
                 </div>
 
                 <!-- Story Item 3 -->
-                <div class="relative pl-8 rtl:pl-0 rtl:pr-8 md:pl-0 md:rtl:pr-0 md:flex md:items-center group reveal">
+                <div class="relative pl-8 rtl:pl-0 rtl:pr-8 md:pl-0 md:rtl:pr-0 md:flex md:items-center group gsap-reveal">
                     <div class="absolute -left-[17px] rtl:-right-[17px] md:left-1/2 md:-translate-x-1/2 rtl:md:translate-x-1/2 top-0 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-300 z-10 shadow-lg">
                         <i class="fas fa-ring text-xs"></i>
                     </div>
                     <div class="md:w-1/2 md:pr-12 md:rtl:pr-0 md:rtl:pl-12 md:text-right md:rtl:text-left">
-                        <div class="glass-card p-6 rounded-2xl hover:border-amber-400/50 transition-all">
+                        <div class="glass-card p-6 rounded-2xl hover:border-amber-400/50">
                             <span class="text-amber-400 font-cinzel text-xs font-bold tracking-widest uppercase" data-i18n="s3Date">November 20, 2026</span>
                             <h3 class="font-serif-title text-xl text-amber-200 font-semibold my-1" data-i18n="s3Title">The Royal Wedding</h3>
                             <p class="text-slate-300 text-sm leading-relaxed" data-i18n="s3Desc">
@@ -342,10 +335,46 @@
             </div>
         </section>
 
+        <!-- PHOTO GALLERY SECTION (NEW UPGRADE) -->
+        <section class="py-20 px-4 max-w-6xl mx-auto gsap-reveal">
+            <div class="text-center mb-12">
+                <h2 class="font-cinzel text-3xl sm:text-4xl text-gold-gradient font-bold tracking-wider" data-i18n="galleryTitle">Royal Moments</h2>
+                <p class="text-slate-400 text-sm mt-2" data-i18n="gallerySubtitle">Capturing Our Journey To Forever</p>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-card rounded-2xl overflow-hidden p-2 group">
+                    <div class="overflow-hidden rounded-xl h-64 bg-slate-900 relative">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Pre-wedding" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-amber-200 font-serif-title text-sm">Engagement Memories</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card rounded-2xl overflow-hidden p-2 group">
+                    <div class="overflow-hidden rounded-xl h-64 bg-slate-900 relative">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80" alt="Ring" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-amber-200 font-serif-title text-sm">The Golden Promise</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card rounded-2xl overflow-hidden p-2 group">
+                    <div class="overflow-hidden rounded-xl h-64 bg-slate-900 relative">
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Couple" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-amber-200 font-serif-title text-sm">Eternal Smiles</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- EVENT SCHEDULE & LOCATION -->
         <section class="py-24 px-4 bg-slate-900/40 border-y border-amber-500/10 relative">
             <div class="max-w-5xl mx-auto">
-                <div class="text-center mb-16 reveal">
+                <div class="text-center mb-16 gsap-reveal">
                     <h2 class="font-cinzel text-3xl sm:text-4xl text-gold-gradient font-bold tracking-wider" data-i18n="eventTitle">The Celebration Details</h2>
                     <p class="text-slate-400 text-sm mt-2" data-i18n="eventSubtitle">Program & Venue Location</p>
                     <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-4"></div>
@@ -353,7 +382,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
                     <!-- Venue -->
-                    <div class="glass-card p-8 rounded-3xl flex flex-col justify-between reveal">
+                    <div class="glass-card p-8 rounded-3xl flex flex-col justify-between gsap-reveal">
                         <div>
                             <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-300 text-2xl mb-6">
                                 <i class="fas fa-hotel"></i>
@@ -377,7 +406,7 @@
                     </div>
 
                     <!-- Evening Timeline -->
-                    <div class="glass-card p-8 rounded-3xl reveal">
+                    <div class="glass-card p-8 rounded-3xl gsap-reveal">
                         <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-300 text-2xl mb-6">
                             <i class="fas fa-clock"></i>
                         </div>
@@ -412,38 +441,51 @@
             </div>
         </section>
 
-        <!-- DRESS CODE SECTION -->
-        <section class="py-20 px-4 max-w-4xl mx-auto text-center reveal">
-            <div class="glass-card p-8 sm:p-12 rounded-3xl">
-                <h2 class="font-cinzel text-2xl sm:text-3xl text-gold-gradient font-bold tracking-wider mb-2" data-i18n="dressTitle">Dress Code</h2>
-                <p class="font-serif-title italic text-amber-200 text-lg mb-8" data-i18n="dressSubtitle">"Black Tie & Royal Elegance"</p>
+        <!-- DRESS CODE & GUEST INFO SECTION -->
+        <section class="py-20 px-4 max-w-5xl mx-auto text-center gsap-reveal">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Dress Code -->
+                <div class="glass-card p-8 rounded-3xl md:col-span-2">
+                    <h2 class="font-cinzel text-2xl sm:text-3xl text-gold-gradient font-bold tracking-wider mb-2" data-i18n="dressTitle">Dress Code</h2>
+                    <p class="font-serif-title italic text-amber-200 text-lg mb-8" data-i18n="dressSubtitle">"Black Tie & Royal Elegance"</p>
 
-                <div class="flex items-center justify-center gap-6">
-                    <div class="flex flex-col items-center gap-2">
-                        <div class="w-12 h-12 rounded-full bg-slate-950 border-2 border-amber-400 shadow-md"></div>
-                        <span class="text-[10px] text-slate-400 uppercase tracking-widest" data-i18n="cBlack">Black</span>
+                    <div class="flex items-center justify-center gap-8">
+                        <div class="flex flex-col items-center gap-2">
+                            <div class="w-12 h-12 rounded-full bg-slate-950 border-2 border-amber-400 shadow-md"></div>
+                            <span class="text-[10px] text-slate-400 uppercase tracking-widest" data-i18n="cBlack">Black</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2">
+                            <div class="w-12 h-12 rounded-full bg-amber-400 border-2 border-amber-200 shadow-md"></div>
+                            <span class="text-[10px] text-slate-400 uppercase tracking-widest" data-i18n="cGold">Gold</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2">
+                            <div class="w-12 h-12 rounded-full bg-emerald-950 border-2 border-emerald-500/40 shadow-md"></div>
+                            <span class="text-[10px] text-slate-400 uppercase tracking-widest" data-i18n="cEmerald">Emerald</span>
+                        </div>
                     </div>
-                    <div class="flex flex-col items-center gap-2">
-                        <div class="w-12 h-12 rounded-full bg-amber-400 border-2 border-amber-200 shadow-md"></div>
-                        <span class="text-[10px] text-slate-400 uppercase tracking-widest" data-i18n="cGold">Gold</span>
-                    </div>
-                    <div class="flex flex-col items-center gap-2">
-                        <div class="w-12 h-12 rounded-full bg-emerald-950 border-2 border-emerald-500/40 shadow-md"></div>
-                        <span class="text-[10px] text-slate-400 uppercase tracking-widest" data-i18n="cEmerald">Emerald</span>
-                    </div>
+                </div>
+
+                <!-- Info Box (NEW UPGRADE) -->
+                <div class="glass-card p-8 rounded-3xl flex flex-col justify-center text-left rtl:text-right">
+                    <h3 class="font-cinzel text-amber-300 font-bold text-lg mb-4" data-i18n="infoTitle">Guest Information</h3>
+                    <ul class="space-y-3 text-xs text-slate-300">
+                        <li class="flex items-center gap-2"><i class="fas fa-child-rearing text-amber-400"></i> <span data-i18n="infoKids">Adults Only Celebration</span></li>
+                        <li class="flex items-center gap-2"><i class="fas fa-camera text-amber-400"></i> <span data-i18n="infoPhotos">Unplugged Ceremony</span></li>
+                        <li class="flex items-center gap-2"><i class="fas fa-parking text-amber-400"></i> <span data-i18n="infoValet">Valet Parking Available</span></li>
+                    </ul>
                 </div>
             </div>
         </section>
 
         <!-- RSVP FORM SECTION -->
         <section id="rsvp" class="py-24 px-4 max-w-3xl mx-auto relative">
-            <div class="text-center mb-12 reveal">
+            <div class="text-center mb-12 gsap-reveal">
                 <h2 class="font-cursive text-5xl sm:text-6xl text-amber-300 mb-2" data-i18n="rsvpTitle">Kindly RSVP</h2>
                 <p class="font-cinzel text-xs sm:text-sm tracking-[0.3em] uppercase text-slate-400" data-i18n="rsvpDeadline">Please respond before November 1st, 2026</p>
                 <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-4"></div>
             </div>
 
-            <div id="envelopeContainer" class="glass-card p-8 sm:p-12 rounded-3xl border-2 border-amber-500/40 shadow-2xl relative transition-all duration-700 reveal">
+            <div id="envelopeContainer" class="glass-card p-8 sm:p-12 rounded-3xl border-2 border-amber-500/40 shadow-2xl relative transition-all duration-700 gsap-reveal">
                 <form id="rsvpForm" onsubmit="handleRSVPSubmit(event)" class="space-y-6">
                     <div>
                         <label class="block text-xs uppercase tracking-widest text-amber-300 font-bold mb-2" data-i18n="formName">Full Name *</label>
@@ -498,7 +540,7 @@
 
         <!-- WISHES & MEMORY WALL -->
         <section class="py-24 px-4 max-w-5xl mx-auto">
-            <div class="glass-card p-8 sm:p-12 rounded-3xl reveal">
+            <div class="glass-card p-8 sm:p-12 rounded-3xl gsap-reveal">
                 <h3 class="font-cinzel text-2xl font-bold text-amber-300 text-center mb-6" data-i18n="wishesTitle">Blessings & Wishes</h3>
 
                 <form onsubmit="submitWish(event)" class="max-w-2xl mx-auto space-y-4 mb-10">
@@ -542,9 +584,14 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC ENGINE -->
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-amber-400 text-slate-950 px-6 py-3 rounded-full font-bold text-sm shadow-2xl transition-all duration-500 opacity-0 pointer-events-none transform translate-y-4">
+        <span id="toastMsg">Notification Message</span>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC & ANIMATION ENGINE -->
     <script>
-        /* 0. MULTI-LANGUAGE (ARABIC / ENGLISH) ENGINE */
+        /* 0. MULTI-LANGUAGE ENGINE */
         let currentLang = 'en';
 
         const i18nData = {
@@ -553,8 +600,7 @@
                 openDoor: "Open Royal Invitation",
                 tapHint: "Tap to enter with music & auto-scroll",
                 heroSubtitle: "The Wedding Celebration Of",
-                groom: "Mohanad",
-                bride: "Farida",
+                groom: "Mohanad", bride: "Farida",
                 heroQuote: '"Together with their families, they joyfully request the pleasure of your company to celebrate their love and marriage."',
                 heroDate: "Friday, November 20, 2026",
                 cdDays: "Days", cdHours: "Hours", cdMinutes: "Minutes", cdSeconds: "Seconds",
@@ -562,6 +608,7 @@
                 s1Date: "Spring 2022", s1Title: "First Glance", s1Desc: "A serendipitous encounter turned into hours of effortless conversations. Mohanad knew instantly Farida was one of a kind.",
                 s2Date: "Autumn 2025", s2Title: "The Proposal", s2Desc: "Under a starlit shore, Mohanad popped the question. Farida happily said YES to a lifetime together!",
                 s3Date: "November 20, 2026", s3Title: "The Royal Wedding", s3Desc: "Gathering our loved ones to celebrate the beginning of our forever story.",
+                galleryTitle: "Royal Moments", gallerySubtitle: "Capturing Our Journey To Forever",
                 eventTitle: "The Celebration Details", eventSubtitle: "Program & Venue Location",
                 venueLabel: "Venue", venueName: "The Royal Palace Hotel", venueAddress: "The Grand Ballroom, Royal Boulevard, Cairo, Egypt",
                 googleMapsBtn: "Google Maps", addCalendarBtn: "Add Calendar",
@@ -571,6 +618,7 @@
                 t3Title: "Gala Dinner", t3Desc: "Multi-course dinner buffet & wedding cake cutting.",
                 dressTitle: "Dress Code", dressSubtitle: '"Black Tie & Royal Elegance"',
                 cBlack: "Black", cGold: "Gold", cEmerald: "Emerald",
+                infoTitle: "Guest Information", infoKids: "Adults Only Celebration", infoPhotos: "Unplugged Ceremony", infoValet: "Valet Parking Available",
                 rsvpTitle: "Kindly RSVP", rsvpDeadline: "Please respond before November 1st, 2026",
                 formName: "Full Name *", formAttendance: "Attendance *", formGuests: "Number of Guests", formNote: "Song Request / Special Note",
                 optAccept: "Joyfully Accepts", optDecline: "Regretfully Declines",
@@ -585,15 +633,15 @@
                 openDoor: "افتح الدعوة الملكية",
                 tapHint: "اضغط للدخول مع الموسيقى والتحريك التلقائي",
                 heroSubtitle: "حفل زفاف",
-                groom: "مهند",
-                bride: "فريدة",
+                groom: "مهند", bride: "فريدة",
                 heroQuote: '"يتشرفان بفرط السرور بدعوة سيادتكم لمشاركتهما أجمل لحظات العمر واحتفالاً بعقد قرانهما."',
                 heroDate: "الجمعة، 20 نوفمبر 2026",
                 cdDays: "يوم", cdHours: "ساعة", cdMinutes: "دقيقة", cdSeconds: "ثانية",
-                storyTitle: "قصة حبنا", storySubtitle: "روخان في رحلة واحدة",
+                storyTitle: "قصة حبنا", storySubtitle: "روحان في رحلة واحدة",
                 s1Date: "ربيع 2022", s1Title: "اللقاء الأول", s1Desc: "لقاء بالصدفة تحول إلى ساعات من الحديث العذب. شعر مهند منذ اللحظة الأولى بأن فريدة مميزة جداً.",
                 s2Date: "خريف 2025", s2Title: "عرض الزواج", s2Desc: "تحت شاطئ مليء بالنجوم، طلب مهند يدها ووافقت فريدة بكل حب لبدء حياة مشتركة!",
                 s3Date: "20 نوفمبر 2026", s3Title: "حفل الزفاف الملكي", s3Desc: "نجمع الأحباب والأصدقاء لنحتفل سوياً ببدء قصتنا الأبدية.",
+                galleryTitle: "لحظات ملكية", gallerySubtitle: "توثيق رحلتنا نحو الأبدية",
                 eventTitle: "تفاصيل الاحتفال", eventSubtitle: "البرنامج وموقع القاعة",
                 venueLabel: "المكان", venueName: "فندق القصر الملكي", venueAddress: "القاعة الكبرى، الشارع الملكي، القاهرة، مصر",
                 googleMapsBtn: "خرائط جوجل", addCalendarBtn: "إضافة للتقويم",
@@ -603,6 +651,7 @@
                 t3Title: "عشاء جالا الفاخر", t3Desc: "بوفيه مفتوح مع تقطيع كعكة الزفاف.",
                 dressTitle: "قواعد الزي (Dress Code)", dressSubtitle: '"بدلة رسمية وفخامة ملكية"',
                 cBlack: "أسود", cGold: "ذهبي", cEmerald: "زمردي",
+                infoTitle: "تنبيهات الهامش", infoKids: "حفل مخصص للكبار فقط", infoPhotos: "دعوة للاستمتاع بدون تصوير", infoValet: "خدمة صف السيارات متوفرة",
                 rsvpTitle: "تأكيد الحضور", rsvpDeadline: "برجاء تأكيد الحضور قبل 1 نوفمبر 2026",
                 formName: "الاسم بالكامل *", formAttendance: "حالة الحضور *", formGuests: "عدد الضيوف", formNote: "إهداء أغنية / ملاحظة خاصة",
                 optAccept: "يشرفني الحضور بكل سرور", optDecline: "أعتذر عن الحضور بكل أسف",
@@ -619,23 +668,16 @@
             const htmlRoot = document.getElementById('htmlRoot');
             const data = i18nData[currentLang];
 
-            if (currentLang === 'ar') {
-                htmlRoot.setAttribute('dir', 'rtl');
-                htmlRoot.setAttribute('lang', 'ar');
-            } else {
-                htmlRoot.setAttribute('dir', 'ltr');
-                htmlRoot.setAttribute('lang', 'en');
-            }
+            htmlRoot.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+            htmlRoot.setAttribute('lang', currentLang);
 
             document.getElementById('langText').innerText = data.langText;
 
-            // Translate Text Elements
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (data[key]) el.innerText = data[key];
             });
 
-            // Translate Placeholders
             document.getElementById('inputName').placeholder = data.phName;
             document.getElementById('inputNote').placeholder = data.phNote;
             document.getElementById('wishAuthor').placeholder = data.phWishName;
@@ -645,7 +687,62 @@
             loadWishes();
         }
 
-        /* 1. AUDIO PLAYBACK ENGINE (FIXED BROWSER AUTOPLAY) */
+        /* 1. GSAP ANIMATIONS INITIALIZATION */
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Animate Hero Section Elements
+            gsap.from(".gsap-hero > *", {
+                duration: 1.2,
+                y: 50,
+                opacity: 0,
+                stagger: 0.2,
+                ease: "power3.out",
+                delay: 0.5
+            });
+
+            // Animate Scroll Reveals dynamically
+            gsap.utils.toArray('.gsap-reveal').forEach(element => {
+                gsap.from(element, {
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 60,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power2.out"
+                });
+            });
+
+            initCardTilt();
+            loadWishes();
+        });
+
+        /* 3D TILT EFFECT ON CARDS */
+        function initCardTilt() {
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -6;
+                    const rotateY = ((x - centerX) / centerX) * 6;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            });
+        }
+
+        /* 2. AUDIO PLAYBACK ENGINE */
         const audioElement = document.getElementById('weddingAudio');
         let isAudioPlaying = false;
 
@@ -654,9 +751,8 @@
             audioElement.play().then(() => {
                 isAudioPlaying = true;
                 updateAudioUI(true);
-            }).catch(err => {
-                console.log("Audio playback waiting for gesture fallback:", err);
-                startAudioSynth();
+            }).catch(() => {
+                updateAudioUI(false);
             });
         }
 
@@ -687,31 +783,9 @@
             }
         }
 
-        /* WEB AUDIO SYNTHESIZER FALLBACK */
-        let audioCtx = null;
-        function startAudioSynth() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!audioCtx) audioCtx = new AudioContext();
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(220, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                isAudioPlaying = true;
-                updateAudioUI(true);
-            } catch(e) {}
-        }
-
-
-        /* 2. AUTO-SCROLL ENGINE (RELIABLE CONTINUOUS LOOP) */
+        /* 3. AUTO-SCROLL ENGINE */
         let isAutoScrolling = false;
-        let scrollSpeed = 1.5; // pixels per step
+        let scrollSpeed = 1.5;
         let scrollAnimationFrame = null;
 
         function toggleAutoScroll() {
@@ -725,9 +799,7 @@
             }
         }
 
-        function changeAutoScrollSpeed(val) {
-            scrollSpeed = parseFloat(val);
-        }
+        function changeAutoScrollSpeed(val) { scrollSpeed = parseFloat(val); }
 
         function updateAutoScrollUI() {
             const icon = document.getElementById('autoScrollIcon');
@@ -750,33 +822,19 @@
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 
             if (currentScroll >= maxScroll - 2) {
-                // Loop gently back to top
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                setTimeout(() => {
-                    if (isAutoScrolling) stepAutoScroll();
-                }, 2000);
+                setTimeout(() => { if (isAutoScrolling) stepAutoScroll(); }, 2000);
                 return;
             }
 
-            window.scrollBy({
-                top: scrollSpeed,
-                behavior: 'instant'
-            });
-
+            window.scrollBy({ top: scrollSpeed, behavior: 'instant' });
             scrollAnimationFrame = requestAnimationFrame(stepAutoScroll);
         }
 
-        // Pause auto-scroll if user manually scrolls
-        window.addEventListener('wheel', () => {
-            if (isAutoScrolling) toggleAutoScroll();
-        }, { passive: true });
+        window.addEventListener('wheel', () => { if (isAutoScrolling) toggleAutoScroll(); }, { passive: true });
+        window.addEventListener('touchmove', () => { if (isAutoScrolling) toggleAutoScroll(); }, { passive: true });
 
-        window.addEventListener('touchmove', () => {
-            if (isAutoScrolling) toggleAutoScroll();
-        }, { passive: true });
-
-
-        /* 3. ENTRANCE DOOR UNLOCK LOGIC */
+        /* 4. ENTRANCE DOOR UNLOCK LOGIC WITH GSAP */
         function openInvitationDoors() {
             playAudio();
 
@@ -784,28 +842,20 @@
             const mainContent = document.getElementById('mainContent');
             const lockCenter = document.getElementById('doorLockCenter');
 
-            lockCenter.style.opacity = '0';
-            lockCenter.style.transform = 'scale(0.5)';
+            gsap.to(lockCenter, { scale: 0, opacity: 0, duration: 0.5, ease: "back.in(1.7)" });
 
             setTimeout(() => {
                 overlay.classList.add('doors-open');
                 mainContent.classList.remove('opacity-0');
-            }, 300);
+            }, 400);
 
             setTimeout(() => {
-                overlay.style.pointerEvents = 'none';
-                overlay.style.opacity = '0';
-                overlay.style.display = 'none'; // Remove overlay from visual DOM completely
-
-                // Automatically start auto-scroll after doors open
-                if (!isAutoScrolling) {
-                    toggleAutoScroll();
-                }
-            }, 2100);
+                overlay.style.display = 'none';
+                if (!isAutoScrolling) toggleAutoScroll();
+            }, 2300);
         }
 
-
-        /* 4. FALLING PETALS CANVAS */
+        /* 5. PARTICLES CANVAS ENGINE */
         const canvas = document.getElementById('particlesCanvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -845,7 +895,7 @@
                 ctx.fill();
             }
         }
-        for (let i = 0; i < 40; i++) particles.push(new Particle());
+        for (let i = 0; i < 45; i++) particles.push(new Particle());
 
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -854,7 +904,7 @@
         }
         animateParticles();
 
-        /* 5. COUNTDOWN TIMER */
+        /* 6. COUNTDOWN TIMER */
         const targetDate = new Date("November 20, 2026 18:00:00").getTime();
         function updateCountdown() {
             const now = new Date().getTime();
@@ -870,18 +920,6 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        /* 6. SCROLL REVEAL ANIMATIONS */
-        function revealOnScroll() {
-            const reveals = document.querySelectorAll('.reveal');
-            reveals.forEach(el => {
-                if (el.getBoundingClientRect().top < window.innerHeight - 80) {
-                    el.classList.add('active');
-                }
-            });
-        }
-        window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll();
-
         /* 7. RSVP FORM SUBMISSION */
         function handleRSVPSubmit(e) {
             e.preventDefault();
@@ -892,6 +930,7 @@
                 container.classList.add('hidden');
                 container.classList.remove('animate-envelope-fly');
                 document.getElementById('rsvpSuccessBox').classList.remove('hidden');
+                showToast(currentLang === 'ar' ? "تم إرسال تأكيد الحضور بنجاح!" : "RSVP Submitted Successfully!");
             }, 1600);
         }
 
@@ -901,14 +940,14 @@
             document.getElementById('envelopeContainer').classList.remove('hidden');
         }
 
-        /* 8. LOCALSTORAGE WISHES WALL */
+        /* 8. WISHES WALL & TOAST */
         function loadWishes() {
             const wishesGrid = document.getElementById('wishesGrid');
             const savedWishes = JSON.parse(localStorage.getItem('mf_wedding_wishes') || '[]');
 
             const defaultWishes = currentLang === 'ar' ? [
                 { author: "يوسف وسارة", relation: "أصدقاء المقربين", text: "ألف مبروك لأجمل عروسين! نتمنى لكما حياة ملؤها الحب والسعادة الأبدية." },
-                { author: "الخالة ليلى", relation: "العائلة", text: "بارك الله لكما وبارك عليكما وجمع بينكما في خير." }
+                { author: "الخالة ليلى", relation: "العائلة", text: "بارك الله لكما وبارك عليكما وجمع بينهما في خير." }
             ] : [
                 { author: "Youssef & Sarah", relation: "Best Friends", text: "Wishing you a lifetime filled with love and endless joy!" },
                 { author: "Aunt Layla", relation: "Family", text: "May your journey together be blessed with endless happiness." }
@@ -942,6 +981,17 @@
             document.getElementById('wishAuthor').value = '';
             document.getElementById('wishRelation').value = '';
             document.getElementById('wishText').value = '';
+
+            showToast(currentLang === 'ar' ? "تم نشر التهنئة بنجاح!" : "Wish Posted Successfully!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+            }, 3000);
         }
 
         function escapeHTML(str) {
@@ -956,8 +1006,6 @@
 
         function openMapModal() { document.getElementById('mapModal').classList.remove('hidden'); }
         function closeMapModal() { document.getElementById('mapModal').classList.add('hidden'); }
-
-        document.addEventListener('DOMContentLoaded', loadWishes);
     </script>
 </body>
 </html>
