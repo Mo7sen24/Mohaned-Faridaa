@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="htmlRoot" class="scroll-smooth">
+<html lang="en" id="htmlRoot" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,7 +58,7 @@
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(212, 175, 55, 0.25);
             box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.9), 0 0 15px rgba(212, 175, 55, 0.05);
-            transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
             position: relative;
             overflow: hidden;
         }
@@ -91,34 +91,31 @@
             background: radial-gradient(circle at center, rgba(212, 175, 55, 0.4) 0%, rgba(243, 229, 171, 0.15) 40%, transparent 70%);
         }
 
-        /* Highly Optimized 3D Door Perspective Setup */
+        /* 3D Door Perspective Setup */
         .door-container {
-            perspective: 2000px;
-            perspective-origin: center;
-            transform-style: preserve-3d;
-            will-change: opacity, transform;
+            perspective: 3000px;
+            perspective-origin: 50% 50%;
         }
 
-        .door-left, .door-right {
+        .door-left {
+            transform-origin: left center;
             will-change: transform;
-            transform: translate3d(0,0,0);
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            transition: transform 2.2s cubic-bezier(0.77, 0, 0.175, 1);
+            transition: transform 2.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .door-left { transform-origin: left center; }
-        .door-right { transform-origin: right center; }
+        .door-right {
+            transform-origin: right center;
+            will-change: transform;
+            transition: transform 2.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-        html[dir="rtl"] .door-left { transform-origin: right center; }
-        html[dir="rtl"] .door-right { transform-origin: left center; }
+        .doors-open .door-left { transform: rotateY(-125deg) translateZ(-50px); }
+        .doors-open .door-right { transform: rotateY(125deg) translateZ(-50px); }
 
-        /* Smooth Door Opening States */
-        .doors-open .door-left { transform: rotateY(-110deg) translateZ(0); }
-        .doors-open .door-right { transform: rotateY(110deg) translateZ(0); }
-
-        html[dir="rtl"] .doors-open .door-left { transform: rotateY(110deg) translateZ(0); }
-        html[dir="rtl"] .doors-open .door-right { transform: rotateY(-110deg) translateZ(0); }
+        [dir="rtl"] .door-left { transform-origin: right center; }
+        [dir="rtl"] .door-right { transform-origin: left center; }
+        [dir="rtl"] .doors-open .door-left { transform: rotateY(125deg) translateZ(-50px); }
+        [dir="rtl"] .doors-open .door-right { transform: rotateY(-125deg) translateZ(-50px); }
 
         /* Royal Shimmer Button */
         @keyframes shimmer {
@@ -186,16 +183,17 @@
 
     <!-- HTML5 Audio Element for Romantic Instrumental Music -->
     <audio id="weddingAudio" loop preload="auto">
-        <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-wedding-marriage-violin-237.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112199.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b9812739.mp3?filename=romantic-piano-wedding-10118.mp3" type="audio/mpeg">
     </audio>
 
     <!-- FIXED CONTROLS BAR -->
     <div id="topWidgetBar" class="fixed bottom-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:top-6 sm:bottom-auto sm:right-6 z-40 flex items-center gap-2 sm:gap-3 bg-slate-950/95 backdrop-blur-xl border border-amber-500/50 p-2 sm:p-2.5 rounded-full shadow-2xl max-w-[95vw] overflow-x-auto">
         
         <!-- LANGUAGE TOGGLE BUTTON -->
-        <button id="langToggleBtn" onclick="toggleLanguage()" class="flex items-center gap-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 px-3 py-1.5 rounded-full transition-all text-xs font-bold tracking-wider shrink-0">
+        <button id="langToggleBtn" onclick="toggleLanguage()" class="flex items-center gap-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 px-3 py-1.5 rounded-full transition-all text-xs font-bold tracking-wider">
             <i class="fas fa-globe text-[11px]"></i>
-            <span id="langText">English</span>
+            <span id="langText">عربي</span>
         </button>
 
         <div class="h-4 w-px bg-amber-500/30 shrink-0"></div>
@@ -203,14 +201,14 @@
         <!-- AUTO-SCROLL TOGGLE -->
         <button id="toggleAutoScrollBtn" onclick="toggleAutoScroll()" class="flex items-center gap-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1.5 rounded-full transition-all text-xs font-semibold uppercase tracking-wider shrink-0">
             <i id="autoScrollIcon" class="fas fa-play text-[11px]"></i>
-            <span id="autoScrollStatusText" data-i18n="autoScroll">تمرير تلقائي</span>
+            <span id="autoScrollStatusText" data-i18n="autoScroll">Auto-Scroll</span>
         </button>
 
         <!-- SPEED SELECTOR -->
         <select id="autoScrollSpeed" onchange="changeAutoScrollSpeed(this.value)" class="bg-slate-900 text-amber-300 text-xs font-semibold rounded-full border border-amber-500/30 px-2 py-1 focus:outline-none shrink-0">
-            <option value="0.8" data-i18n="speedSlow">بطيء</option>
-            <option value="1.5" selected data-i18n="speedNormal">عادي</option>
-            <option value="2.8" data-i18n="speedFast">سريع</option>
+            <option value="0.8" data-i18n="speedSlow">Slow</option>
+            <option value="1.5" selected data-i18n="speedNormal">Normal</option>
+            <option value="2.8" data-i18n="speedFast">Fast</option>
         </select>
 
         <div class="h-4 w-px bg-amber-500/30 shrink-0"></div>
@@ -223,47 +221,49 @@
                 <span class="eq-bar w-1 bg-amber-400 rounded-full h-1"></span>
             </div>
             <i id="audioIcon" class="fas fa-music text-[11px]"></i>
-            <span id="audioStatusText" class="hidden sm:inline" data-i18n="music">موسيقى</span>
+            <span id="audioStatusText" class="hidden sm:inline" data-i18n="music">Music</span>
         </button>
 
         <div class="h-4 w-px bg-amber-500/30 shrink-0"></div>
 
         <!-- QUICK JUMP BUTTON -->
         <a href="#rsvp" class="bg-amber-400 text-slate-950 font-bold px-3.5 py-1.5 rounded-full text-xs uppercase tracking-wider hover:bg-amber-300 transition-all shrink-0" data-i18n="rsvpBtn">
-            تأكيد
+            RSVP
         </a>
     </div>
 
-    <!-- GRAND ENTRANCE DOORS OVERLAY -->
-    <div id="entranceOverlay" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-slate-950 door-container pointer-events-auto transition-opacity duration-700">
+    <!-- GRAND ENTRANCE DOORS OVERLAY (UPGRADED) -->
+    <div id="entranceOverlay" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-slate-950 door-container transition-all duration-1000">
         
         <!-- Dynamic Portal Glow behind doors -->
         <div id="doorGlow" class="absolute inset-0 bg-radial-glow opacity-0 pointer-events-none transition-opacity duration-1000 z-10"></div>
 
         <!-- Left Door -->
-        <div id="doorLeft" class="door-left absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/60 border-r-2 sm:border-r-4 border-amber-500/80 flex items-center justify-end pr-2 sm:pr-12 shadow-[10px_0_50px_rgba(0,0,0,0.9)] z-20">
-            <div class="w-full max-w-md h-5/6 border-2 border-amber-500/40 rounded-xl p-4 sm:p-6 flex flex-col justify-between bg-slate-900/60 relative overflow-hidden backdrop-blur-md">
+        <div id="doorLeft" class="door-left absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/60 border-r-4 border-amber-500/80 flex items-center justify-end pr-4 sm:pr-12 shadow-[10px_0_50px_rgba(0,0,0,0.9)] z-20">
+            <div class="w-full max-w-md h-5/6 border-2 border-amber-500/40 rounded-xl p-6 flex flex-col justify-between bg-slate-900/60 relative overflow-hidden backdrop-blur-md">
                 <div class="w-full h-full border border-amber-500/20 rounded-lg flex flex-col items-center justify-center relative">
+                    <!-- Royal Pattern Overlay -->
                     <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                    <i class="fas fa-crown text-amber-400/30 text-5xl sm:text-7xl mb-4 transform -rotate-12"></i>
+                    <i class="fas fa-crown text-amber-400/30 text-7xl mb-4 transform -rotate-12"></i>
                     <div class="w-12 h-0.5 bg-amber-500/40"></div>
                 </div>
             </div>
         </div>
 
         <!-- Right Door -->
-        <div id="doorRight" class="door-right absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-slate-950 via-slate-900 to-amber-950/60 border-l-2 sm:border-l-4 border-amber-500/80 flex items-center justify-start pl-2 sm:pl-12 shadow-[-10px_0_50px_rgba(0,0,0,0.9)] z-20">
-            <div class="w-full max-w-md h-5/6 border-2 border-amber-500/40 rounded-xl p-4 sm:p-6 flex flex-col justify-between bg-slate-900/60 relative overflow-hidden backdrop-blur-md">
+        <div id="doorRight" class="door-right absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-slate-950 via-slate-900 to-amber-950/60 border-l-4 border-amber-500/80 flex items-center justify-start pl-4 sm:pl-12 shadow-[-10px_0_50px_rgba(0,0,0,0.9)] z-20">
+            <div class="w-full max-w-md h-5/6 border-2 border-amber-500/40 rounded-xl p-6 flex flex-col justify-between bg-slate-900/60 relative overflow-hidden backdrop-blur-md">
                 <div class="w-full h-full border border-amber-500/20 rounded-lg flex flex-col items-center justify-center relative">
+                    <!-- Royal Pattern Overlay -->
                     <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                    <i class="fas fa-heart text-amber-400/30 text-5xl sm:text-7xl mb-4 transform rotate-12"></i>
+                    <i class="fas fa-heart text-amber-400/30 text-7xl mb-4 transform rotate-12"></i>
                     <div class="w-12 h-0.5 bg-amber-500/40"></div>
                 </div>
             </div>
         </div>
 
         <!-- Center Unlock Seal & Button -->
-        <div id="doorLockCenter" class="absolute z-30 flex flex-col items-center justify-center text-center p-6">
+        <div id="doorLockCenter" class="absolute z-30 flex flex-col items-center justify-center text-center p-6 transition-all duration-700">
             <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-slate-950/90 border-2 border-amber-400 glow-pulse flex flex-col items-center justify-center shadow-[0_0_50px_rgba(212,175,55,0.3)] mb-8 relative cursor-pointer group" onclick="openInvitationDoors()">
                 <div class="absolute inset-2 rounded-full border border-amber-300/40 border-dashed animate-spin" style="animation-duration: 30s;"></div>
                 <div class="absolute inset-3 rounded-full border border-amber-500/20"></div>
@@ -271,11 +271,11 @@
                 <span class="text-[9px] text-amber-200/80 uppercase tracking-[0.2em] mt-1">Royal Wedding</span>
             </div>
 
-            <button onclick="openInvitationDoors()" class="shimmer-btn text-slate-950 font-bold px-8 sm:px-9 py-3.5 sm:py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 text-xs sm:text-base tracking-widest uppercase flex items-center gap-3 group border border-amber-300/50">
+            <button onclick="openInvitationDoors()" class="shimmer-btn text-slate-950 font-bold px-9 py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 text-sm sm:text-base tracking-widest uppercase flex items-center gap-3 group border border-amber-300/50">
                 <i class="fas fa-key text-slate-900 group-hover:rotate-45 transition-transform duration-500"></i>
-                <span data-i18n="openDoor">افتح الدعوة الملكية</span>
+                <span data-i18n="openDoor">Open Royal Invitation</span>
             </button>
-            <p class="text-xs text-amber-200/80 tracking-widest uppercase mt-4 animate-pulse" data-i18n="tapHint">اضغط للدخول مع الموسيقى والتحريك التلقائي</p>
+            <p class="text-xs text-amber-200/80 tracking-widest uppercase mt-4 animate-pulse" data-i18n="tapHint">Tap to enter with music & auto-scroll</p>
         </div>
     </div>
 
@@ -286,39 +286,39 @@
         <section class="min-h-screen flex flex-col items-center justify-center text-center px-4 py-20 relative overflow-hidden">
             <div class="max-w-4xl mx-auto z-10 gsap-hero">
                 <div class="hero-badge inline-block mb-4 px-6 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs sm:text-sm tracking-[0.3em] uppercase" data-i18n="heroSubtitle">
-                    حفل زفاف
+                    The Wedding Celebration Of
                 </div>
 
                 <h1 class="hero-title font-cinzel text-4xl sm:text-7xl lg:text-8xl font-black text-gold-gradient my-6 leading-tight tracking-wider drop-shadow-2xl">
-                    <span data-i18n="groom">مهند</span> <span class="font-cursive text-amber-200 font-normal text-5xl sm:text-8xl lg:text-9xl block sm:inline my-2 sm:my-0">&amp;</span> <span data-i18n="bride">فريدة</span>
+                    <span data-i18n="groom">Mohanad</span> <span class="font-cursive text-amber-200 font-normal text-5xl sm:text-8xl lg:text-9xl block sm:inline my-2 sm:my-0">&</span> <span data-i18n="bride">Farida</span>
                 </h1>
 
                 <p class="hero-quote font-serif-title italic text-lg sm:text-2xl text-slate-300 max-w-2xl mx-auto mb-10 font-light leading-relaxed" data-i18n="heroQuote">
-                    "يتشرفان بفرط السرور بدعوة سيادتكم لمشاركتهما أجمل لحظات العمر واحتفالاً بعقد قرانهما."
+                    "Together with their families, they joyfully request the pleasure of your company to celebrate their love and marriage."
                 </p>
 
                 <div class="hero-date inline-flex items-center gap-3 bg-slate-900/80 border border-amber-500/40 px-6 py-3 rounded-full text-amber-300 font-semibold text-sm sm:text-base tracking-wider mb-12 shadow-lg">
                     <i class="far fa-calendar-alt text-amber-400"></i>
-                    <span data-i18n="heroDate">الجمعة، 20 نوفمبر 2026</span>
+                    <span data-i18n="heroDate">Friday, November 20, 2026</span>
                 </div>
 
                 <!-- Live Countdown Timer -->
                 <div class="hero-countdown grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto">
                     <div class="glass-card p-4 rounded-2xl flex flex-col items-center">
                         <span id="cd-days" class="font-cinzel text-3xl sm:text-4xl font-bold text-amber-300">00</span>
-                        <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest mt-1" data-i18n="cdDays">يوم</span>
+                        <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest mt-1" data-i18n="cdDays">Days</span>
                     </div>
                     <div class="glass-card p-4 rounded-2xl flex flex-col items-center">
                         <span id="cd-hours" class="font-cinzel text-3xl sm:text-4xl font-bold text-amber-300">00</span>
-                        <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest mt-1" data-i18n="cdHours">ساعة</span>
+                        <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest mt-1" data-i18n="cdHours">Hours</span>
                     </div>
                     <div class="glass-card p-4 rounded-2xl flex flex-col items-center">
                         <span id="cd-minutes" class="font-cinzel text-3xl sm:text-4xl font-bold text-amber-300">00</span>
-                        <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest mt-1" data-i18n="cdMinutes">دقيقة</span>
+                        <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest mt-1" data-i18n="cdMinutes">Minutes</span>
                     </div>
                     <div class="glass-card p-4 rounded-2xl flex flex-col items-center">
                         <span id="cd-seconds" class="font-cinzel text-3xl sm:text-4xl font-bold text-amber-300">00</span>
-                        <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest mt-1" data-i18n="cdSeconds">ثانية</span>
+                        <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest mt-1" data-i18n="cdSeconds">Seconds</span>
                     </div>
                 </div>
 
@@ -331,55 +331,55 @@
         <!-- OUR LOVE STORY SECTION -->
         <section id="our-story" class="py-24 px-4 max-w-5xl mx-auto relative">
             <div class="text-center mb-16 gsap-reveal">
-                <h2 class="font-cursive text-5xl sm:text-6xl text-amber-300 mb-2" data-i18n="storyTitle">قصة حبنا</h2>
-                <p class="font-cinzel text-xs sm:text-sm tracking-[0.3em] uppercase text-slate-400" data-i18n="storySubtitle">روحان في رحلة واحدة</p>
+                <h2 class="font-cursive text-5xl sm:text-6xl text-amber-300 mb-2" data-i18n="storyTitle">Our Love Story</h2>
+                <p class="font-cinzel text-xs sm:text-sm tracking-[0.3em] uppercase text-slate-400" data-i18n="storySubtitle">Two Souls, One Journey</p>
                 <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-4"></div>
             </div>
 
-            <div class="relative border-r-2 border-amber-500/30 ltr:border-r-0 ltr:border-l-2 mr-4 md:mr-0 ltr:ml-4 ltr:md:ml-0 md:mx-auto md:max-w-3xl space-y-12">
+            <div class="relative border-l-2 border-amber-500/30 rtl:border-l-0 rtl:border-r-2 ml-4 md:ml-0 rtl:mr-4 rtl:md:mr-0 md:mx-auto md:max-w-3xl space-y-12">
                 <!-- Story Item 1 -->
-                <div class="relative pr-8 ltr:pr-0 ltr:pl-8 md:pr-0 md:ltr:pl-0 md:flex md:items-center group gsap-reveal">
-                    <div class="absolute -right-[17px] ltr:-left-[17px] md:right-1/2 md:translate-x-1/2 ltr:md:-translate-x-1/2 top-0 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-300 z-10 shadow-lg">
+                <div class="relative pl-8 rtl:pl-0 rtl:pr-8 md:pl-0 md:rtl:pr-0 md:flex md:items-center group gsap-reveal">
+                    <div class="absolute -left-[17px] rtl:-right-[17px] md:left-1/2 md:-translate-x-1/2 rtl:md:translate-x-1/2 top-0 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-300 z-10 shadow-lg">
                         <i class="fas fa-compass text-xs"></i>
                     </div>
-                    <div class="md:w-1/2 md:pl-12 md:ltr:pl-0 md:ltr:pr-12 md:text-left md:ltr:text-right">
+                    <div class="md:w-1/2 md:pr-12 md:rtl:pr-0 md:rtl:pl-12 md:text-right md:rtl:text-left">
                         <div class="glass-card p-6 rounded-2xl hover:border-amber-400/50">
-                            <span class="text-amber-400 font-cinzel text-xs font-bold tracking-widest uppercase" data-i18n="s1Date">ربيع 2022</span>
-                            <h3 class="font-serif-title text-xl text-amber-200 font-semibold my-1" data-i18n="s1Title">اللقاء الأول</h3>
+                            <span class="text-amber-400 font-cinzel text-xs font-bold tracking-widest uppercase" data-i18n="s1Date">Spring 2022</span>
+                            <h3 class="font-serif-title text-xl text-amber-200 font-semibold my-1" data-i18n="s1Title">First Glance</h3>
                             <p class="text-slate-300 text-sm leading-relaxed" data-i18n="s1Desc">
-                                لقاء بالصدفة تحول إلى ساعات من الحديث العذب. شعر مهند منذ اللحظة الأولى بأن فريدة مميزة جداً.
+                                A serendipitous encounter turned into hours of effortless conversations. Mohanad knew instantly Farida was one of a kind.
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Story Item 2 -->
-                <div class="relative pr-8 ltr:pr-0 ltr:pl-8 md:pr-0 md:ltr:pl-0 md:flex md:items-center md:flex-row-reverse group gsap-reveal">
-                    <div class="absolute -right-[17px] ltr:-left-[17px] md:right-1/2 md:translate-x-1/2 ltr:md:-translate-x-1/2 top-0 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-300 z-10 shadow-lg">
+                <div class="relative pl-8 rtl:pl-0 rtl:pr-8 md:pl-0 md:rtl:pr-0 md:flex md:items-center md:flex-row-reverse group gsap-reveal">
+                    <div class="absolute -left-[17px] rtl:-right-[17px] md:left-1/2 md:-translate-x-1/2 rtl:md:translate-x-1/2 top-0 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-300 z-10 shadow-lg">
                         <i class="fas fa-gem text-xs"></i>
                     </div>
-                    <div class="md:w-1/2 md:pr-12 md:ltr:pr-0 md:ltr:pl-12 md:text-right md:ltr:text-left">
+                    <div class="md:w-1/2 md:pl-12 md:rtl:pl-0 md:rtl:pr-12 md:text-left md:rtl:text-right">
                         <div class="glass-card p-6 rounded-2xl hover:border-amber-400/50">
-                            <span class="text-amber-400 font-cinzel text-xs font-bold tracking-widest uppercase" data-i18n="s2Date">خريف 2025</span>
-                            <h3 class="font-serif-title text-xl text-amber-200 font-semibold my-1" data-i18n="s2Title">عرض الزواج</h3>
+                            <span class="text-amber-400 font-cinzel text-xs font-bold tracking-widest uppercase" data-i18n="s2Date">Autumn 2025</span>
+                            <h3 class="font-serif-title text-xl text-amber-200 font-semibold my-1" data-i18n="s2Title">The Proposal</h3>
                             <p class="text-slate-300 text-sm leading-relaxed" data-i18n="s2Desc">
-                                تحت شاطئ مليء بالنجوم، طلب مهند يدها ووافقت فريدة بكل حب لبدء حياة مشتركة!
+                                Under a starlit shore, Mohanad popped the question. Farida happily said YES to a lifetime together!
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Story Item 3 -->
-                <div class="relative pr-8 ltr:pr-0 ltr:pl-8 md:pr-0 md:ltr:pl-0 md:flex md:items-center group gsap-reveal">
-                    <div class="absolute -right-[17px] ltr:-left-[17px] md:right-1/2 md:translate-x-1/2 ltr:md:-translate-x-1/2 top-0 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-300 z-10 shadow-lg">
+                <div class="relative pl-8 rtl:pl-0 rtl:pr-8 md:pl-0 md:rtl:pr-0 md:flex md:items-center group gsap-reveal">
+                    <div class="absolute -left-[17px] rtl:-right-[17px] md:left-1/2 md:-translate-x-1/2 rtl:md:translate-x-1/2 top-0 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-300 z-10 shadow-lg">
                         <i class="fas fa-ring text-xs"></i>
                     </div>
-                    <div class="md:w-1/2 md:pl-12 md:ltr:pl-0 md:ltr:pr-12 md:text-left md:ltr:text-right">
+                    <div class="md:w-1/2 md:pr-12 md:rtl:pr-0 md:rtl:pl-12 md:text-right md:rtl:text-left">
                         <div class="glass-card p-6 rounded-2xl hover:border-amber-400/50">
-                            <span class="text-amber-400 font-cinzel text-xs font-bold tracking-widest uppercase" data-i18n="s3Date">20 نوفمبر 2026</span>
-                            <h3 class="font-serif-title text-xl text-amber-200 font-semibold my-1" data-i18n="s3Title">حفل الزفاف الملكي</h3>
+                            <span class="text-amber-400 font-cinzel text-xs font-bold tracking-widest uppercase" data-i18n="s3Date">November 20, 2026</span>
+                            <h3 class="font-serif-title text-xl text-amber-200 font-semibold my-1" data-i18n="s3Title">The Royal Wedding</h3>
                             <p class="text-slate-300 text-sm leading-relaxed" data-i18n="s3Desc">
-                                نجمع الأحباب والأصدقاء لنحتفل سوياً ببدء قصتنا الأبدية.
+                                Gathering our loved ones to celebrate the beginning of our forever story.
                             </p>
                         </div>
                     </div>
@@ -390,8 +390,8 @@
         <!-- PHOTO GALLERY SECTION -->
         <section class="py-20 px-4 max-w-6xl mx-auto gsap-reveal">
             <div class="text-center mb-12">
-                <h2 class="font-cinzel text-3xl sm:text-4xl text-gold-gradient font-bold tracking-wider" data-i18n="galleryTitle">لحظات ملكية</h2>
-                <p class="text-slate-400 text-sm mt-2" data-i18n="gallerySubtitle">توثيق رحلتنا نحو الأبدية</p>
+                <h2 class="font-cinzel text-3xl sm:text-4xl text-gold-gradient font-bold tracking-wider" data-i18n="galleryTitle">Royal Moments</h2>
+                <p class="text-slate-400 text-sm mt-2" data-i18n="gallerySubtitle">Capturing Our Journey To Forever</p>
                 <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-4"></div>
             </div>
 
@@ -400,7 +400,7 @@
                     <div class="overflow-hidden rounded-xl h-64 bg-slate-900 relative">
                         <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Pre-wedding" class="gallery-img w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                            <span class="text-amber-200 font-serif-title text-sm">ذكرى الخطوبة</span>
+                            <span class="text-amber-200 font-serif-title text-sm">Engagement Memories</span>
                         </div>
                     </div>
                 </div>
@@ -408,7 +408,7 @@
                     <div class="overflow-hidden rounded-xl h-64 bg-slate-900 relative">
                         <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80" alt="Ring" class="gallery-img w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                            <span class="text-amber-200 font-serif-title text-sm">الوعد الذهبي</span>
+                            <span class="text-amber-200 font-serif-title text-sm">The Golden Promise</span>
                         </div>
                     </div>
                 </div>
@@ -416,7 +416,7 @@
                     <div class="overflow-hidden rounded-xl h-64 bg-slate-900 relative">
                         <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Couple" class="gallery-img w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                            <span class="text-amber-200 font-serif-title text-sm">ابتسامة الأبدية</span>
+                            <span class="text-amber-200 font-serif-title text-sm">Eternal Smiles</span>
                         </div>
                     </div>
                 </div>
@@ -427,8 +427,8 @@
         <section class="py-24 px-4 bg-slate-900/40 border-y border-amber-500/10 relative">
             <div class="max-w-5xl mx-auto">
                 <div class="text-center mb-16 gsap-reveal">
-                    <h2 class="font-cinzel text-3xl sm:text-4xl text-gold-gradient font-bold tracking-wider" data-i18n="eventTitle">تفاصيل الاحتفال</h2>
-                    <p class="text-slate-400 text-sm mt-2" data-i18n="eventSubtitle">البرنامج وموقع القاعة</p>
+                    <h2 class="font-cinzel text-3xl sm:text-4xl text-gold-gradient font-bold tracking-wider" data-i18n="eventTitle">The Celebration Details</h2>
+                    <p class="text-slate-400 text-sm mt-2" data-i18n="eventSubtitle">Program & Venue Location</p>
                     <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-4"></div>
                 </div>
 
@@ -439,20 +439,20 @@
                             <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-300 text-2xl mb-6">
                                 <i class="fas fa-hotel"></i>
                             </div>
-                            <span class="text-amber-400 font-cinzel text-xs tracking-widest uppercase font-bold" data-i18n="venueLabel">المكان</span>
-                            <h3 class="font-serif-title text-2xl text-slate-100 font-bold mt-1 mb-4" data-i18n="venueName">فندق القصر الملكي</h3>
+                            <span class="text-amber-400 font-cinzel text-xs tracking-widest uppercase font-bold" data-i18n="venueLabel">Venue</span>
+                            <h3 class="font-serif-title text-2xl text-slate-100 font-bold mt-1 mb-4" data-i18n="venueName">The Royal Palace Hotel</h3>
                             <p class="text-slate-300 text-sm leading-relaxed mb-6">
-                                <i class="fas fa-map-marker-alt text-amber-400 ml-2"></i>
-                                <span data-i18n="venueAddress">القاعة الكبرى، الشارع الملكي، القاهرة، مصر</span>
+                                <i class="fas fa-map-marker-alt text-amber-400 mr-2 rtl:ml-2"></i>
+                                <span data-i18n="venueAddress">The Grand Ballroom, Royal Boulevard, Cairo, Egypt</span>
                             </p>
                         </div>
 
                         <div class="flex flex-wrap gap-4 pt-4 border-t border-slate-800">
                             <button onclick="openMapModal()" class="shimmer-btn text-slate-950 font-bold px-6 py-3 rounded-full text-xs uppercase tracking-wider flex items-center gap-2 hover:scale-105 transition-all">
-                                <i class="fas fa-map-marked-alt"></i> <span data-i18n="googleMapsBtn">خرائط جوجل</span>
+                                <i class="fas fa-map-marked-alt"></i> <span data-i18n="googleMapsBtn">Google Maps</span>
                             </button>
                             <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Mohanad+%26+Farida+Wedding&dates=20261120T160000Z/20261120T220000Z" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 px-6 py-3 rounded-full text-xs uppercase tracking-wider flex items-center gap-2 transition-all">
-                                <i class="far fa-calendar-plus"></i> <span data-i18n="addCalendarBtn">إضافة للتقويم</span>
+                                <i class="far fa-calendar-plus"></i> <span data-i18n="addCalendarBtn">Add Calendar</span>
                             </a>
                         </div>
                     </div>
@@ -462,29 +462,29 @@
                         <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-300 text-2xl mb-6">
                             <i class="fas fa-clock"></i>
                         </div>
-                        <span class="text-amber-400 font-cinzel text-xs tracking-widest uppercase font-bold" data-i18n="scheduleLabel">المواعيد</span>
-                        <h3 class="font-serif-title text-2xl text-slate-100 font-bold mt-1 mb-6" data-i18n="timelineTitle">جدول السهرة</h3>
+                        <span class="text-amber-400 font-cinzel text-xs tracking-widest uppercase font-bold" data-i18n="scheduleLabel">Schedule</span>
+                        <h3 class="font-serif-title text-2xl text-slate-100 font-bold mt-1 mb-6" data-i18n="timelineTitle">Evening Timeline</h3>
 
                         <ul class="space-y-6">
                             <li class="flex items-start gap-4">
                                 <span class="bg-amber-500/20 text-amber-300 text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-500/30 font-cinzel shrink-0">06:00 PM</span>
                                 <div>
-                                    <h4 class="text-slate-100 text-sm font-semibold" data-i18n="t1Title">المشروبات واستقبال الضيوف</h4>
-                                    <p class="text-xs text-slate-400" data-i18n="t1Desc">كوكتيل مع معزوفات كلاسيكية.</p>
+                                    <h4 class="text-slate-100 text-sm font-semibold" data-i18n="t1Title">Welcome Drinks & Reception</h4>
+                                    <p class="text-xs text-slate-400" data-i18n="t1Desc">Cocktails and string quartet performance.</p>
                                 </div>
                             </li>
                             <li class="flex items-start gap-4">
                                 <span class="bg-amber-500/20 text-amber-300 text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-500/30 font-cinzel shrink-0">07:00 PM</span>
                                 <div>
-                                    <h4 class="text-slate-100 text-sm font-semibold" data-i18n="t2Title">مراسم الزفاف والزفة</h4>
-                                    <p class="text-xs text-slate-400" data-i18n="t2Desc">دخول العروسين واستعراض الزفة.</p>
+                                    <h4 class="text-slate-100 text-sm font-semibold" data-i18n="t2Title">Wedding Ceremony & Zaffe</h4>
+                                    <p class="text-xs text-slate-400" data-i18n="t2Desc">Processional entrance of bride and groom.</p>
                                 </div>
                             </li>
                             <li class="flex items-start gap-4">
                                 <span class="bg-amber-500/20 text-amber-300 text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-500/30 font-cinzel shrink-0">08:30 PM</span>
                                 <div>
-                                    <h4 class="text-slate-100 text-sm font-semibold" data-i18n="t3Title">عشاء جالا الفاخر</h4>
-                                    <p class="text-xs text-slate-400" data-i18n="t3Desc">بوفيه مفتوح مع تقطيع كعكة الزفاف.</p>
+                                    <h4 class="text-slate-100 text-sm font-semibold" data-i18n="t3Title">Gala Dinner</h4>
+                                    <p class="text-xs text-slate-400" data-i18n="t3Desc">Multi-course dinner buffet & wedding cake cutting.</p>
                                 </div>
                             </li>
                         </ul>
@@ -498,32 +498,32 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Dress Code -->
                 <div class="glass-card p-8 rounded-3xl md:col-span-2">
-                    <h2 class="font-cinzel text-2xl sm:text-3xl text-gold-gradient font-bold tracking-wider mb-2" data-i18n="dressTitle">قواعد الزي (Dress Code)</h2>
-                    <p class="font-serif-title italic text-amber-200 text-lg mb-8" data-i18n="dressSubtitle">"بدلة رسمية وفخامة ملكية"</p>
+                    <h2 class="font-cinzel text-2xl sm:text-3xl text-gold-gradient font-bold tracking-wider mb-2" data-i18n="dressTitle">Dress Code</h2>
+                    <p class="font-serif-title italic text-amber-200 text-lg mb-8" data-i18n="dressSubtitle">"Black Tie & Royal Elegance"</p>
 
                     <div class="flex items-center justify-center gap-8">
                         <div class="flex flex-col items-center gap-2">
                             <div class="w-12 h-12 rounded-full bg-slate-950 border-2 border-amber-400 shadow-md hover:scale-110 transition-transform"></div>
-                            <span class="text-[10px] text-slate-400 uppercase tracking-widest" data-i18n="cBlack">أسود</span>
+                            <span class="text-[10px] text-slate-400 uppercase tracking-widest" data-i18n="cBlack">Black</span>
                         </div>
                         <div class="flex flex-col items-center gap-2">
                             <div class="w-12 h-12 rounded-full bg-amber-400 border-2 border-amber-200 shadow-md hover:scale-110 transition-transform"></div>
-                            <span class="text-[10px] text-slate-400 uppercase tracking-widest" data-i18n="cGold">ذهبي</span>
+                            <span class="text-[10px] text-slate-400 uppercase tracking-widest" data-i18n="cGold">Gold</span>
                         </div>
                         <div class="flex flex-col items-center gap-2">
                             <div class="w-12 h-12 rounded-full bg-emerald-950 border-2 border-emerald-500/40 shadow-md hover:scale-110 transition-transform"></div>
-                            <span class="text-[10px] text-slate-400 uppercase tracking-widest" data-i18n="cEmerald">زمردي</span>
+                            <span class="text-[10px] text-slate-400 uppercase tracking-widest" data-i18n="cEmerald">Emerald</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Info Box -->
-                <div class="glass-card p-8 rounded-3xl flex flex-col justify-center text-right">
-                    <h3 class="font-cinzel text-amber-300 font-bold text-lg mb-4" data-i18n="infoTitle">تنبيهات الهامش</h3>
+                <div class="glass-card p-8 rounded-3xl flex flex-col justify-center text-left rtl:text-right">
+                    <h3 class="font-cinzel text-amber-300 font-bold text-lg mb-4" data-i18n="infoTitle">Guest Information</h3>
                     <ul class="space-y-3 text-xs text-slate-300">
-                        <li class="flex items-center gap-2"><i class="fas fa-child-rearing text-amber-400"></i> <span data-i18n="infoKids">حفل مخصص للكبار فقط</span></li>
-                        <li class="flex items-center gap-2"><i class="fas fa-camera text-amber-400"></i> <span data-i18n="infoPhotos">دعوة للاستمتاع بدون تصوير</span></li>
-                        <li class="flex items-center gap-2"><i class="fas fa-parking text-amber-400"></i> <span data-i18n="infoValet">خدمة صف السيارات متوفرة</span></li>
+                        <li class="flex items-center gap-2"><i class="fas fa-child-rearing text-amber-400"></i> <span data-i18n="infoKids">Adults Only Celebration</span></li>
+                        <li class="flex items-center gap-2"><i class="fas fa-camera text-amber-400"></i> <span data-i18n="infoPhotos">Unplugged Ceremony</span></li>
+                        <li class="flex items-center gap-2"><i class="fas fa-parking text-amber-400"></i> <span data-i18n="infoValet">Valet Parking Available</span></li>
                     </ul>
                 </div>
             </div>
@@ -532,44 +532,44 @@
         <!-- RSVP FORM SECTION -->
         <section id="rsvp" class="py-24 px-4 max-w-3xl mx-auto relative">
             <div class="text-center mb-12 gsap-reveal">
-                <h2 class="font-cursive text-5xl sm:text-6xl text-amber-300 mb-2" data-i18n="rsvpTitle">تأكيد الحضور</h2>
-                <p class="font-cinzel text-xs sm:text-sm tracking-[0.3em] uppercase text-slate-400" data-i18n="rsvpDeadline">برجاء تأكيد الحضور قبل 1 نوفمبر 2026</p>
+                <h2 class="font-cursive text-5xl sm:text-6xl text-amber-300 mb-2" data-i18n="rsvpTitle">Kindly RSVP</h2>
+                <p class="font-cinzel text-xs sm:text-sm tracking-[0.3em] uppercase text-slate-400" data-i18n="rsvpDeadline">Please respond before November 1st, 2026</p>
                 <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-4"></div>
             </div>
 
             <div id="envelopeContainer" class="glass-card p-8 sm:p-12 rounded-3xl border-2 border-amber-500/40 shadow-2xl relative transition-all duration-700 gsap-reveal">
                 <form id="rsvpForm" onsubmit="handleRSVPSubmit(event)" class="space-y-6">
                     <div>
-                        <label class="block text-xs uppercase tracking-widest text-amber-300 font-bold mb-2" data-i18n="formName">الاسم بالكامل *</label>
-                        <input type="text" required placeholder="مثال: أ.د / أحمد و حرمه" id="inputName" class="w-full bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none transition-colors">
+                        <label class="block text-xs uppercase tracking-widest text-amber-300 font-bold mb-2" data-i18n="formName">Full Name *</label>
+                        <input type="text" required placeholder="e.g. Mr. & Mrs. Smith" id="inputName" class="w-full bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none transition-colors">
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-xs uppercase tracking-widest text-amber-300 font-bold mb-2" data-i18n="formAttendance">حالة الحضور *</label>
+                            <label class="block text-xs uppercase tracking-widest text-amber-300 font-bold mb-2" data-i18n="formAttendance">Attendance *</label>
                             <select required class="w-full bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none transition-colors">
-                                <option value="accepts" data-i18n="optAccept">يشرفني الحضور بكل سرور</option>
-                                <option value="declines" data-i18n="optDecline">أعتذر عن الحضور بكل أسف</option>
+                                <option value="accepts" data-i18n="optAccept">Joyfully Accepts</option>
+                                <option value="declines" data-i18n="optDecline">Regretfully Declines</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs uppercase tracking-widest text-amber-300 font-bold mb-2" data-i18n="formGuests">عدد الضيوف</label>
+                            <label class="block text-xs uppercase tracking-widest text-amber-300 font-bold mb-2" data-i18n="formGuests">Number of Guests</label>
                             <select class="w-full bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none transition-colors">
-                                <option value="1" data-i18n="opt1Guest">شخص واحد</option>
-                                <option value="2" data-i18n="opt2Guests">شخصان (+1)</option>
+                                <option value="1" data-i18n="opt1Guest">1 Person</option>
+                                <option value="2" data-i18n="opt2Guests">2 Persons (+1)</option>
                             </select>
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs uppercase tracking-widest text-amber-300 font-bold mb-2" data-i18n="formNote">إهداء أغنية / ملاحظة خاصة</label>
-                        <textarea rows="3" placeholder="اقترح أغنية للـ DJ..." id="inputNote" class="w-full bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none transition-colors"></textarea>
+                        <label class="block text-xs uppercase tracking-widest text-amber-300 font-bold mb-2" data-i18n="formNote">Song Request / Special Note</label>
+                        <textarea rows="3" placeholder="Suggest a song for the DJ..." id="inputNote" class="w-full bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none transition-colors"></textarea>
                     </div>
 
                     <div class="text-center pt-4">
                         <button type="submit" class="shimmer-btn text-slate-950 font-bold px-10 py-4 rounded-full shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 text-sm uppercase tracking-widest flex items-center gap-3 mx-auto">
                             <i class="fas fa-paper-plane"></i>
-                            <span data-i18n="btnSendRSVP">إرسال التأكيد</span>
+                            <span data-i18n="btnSendRSVP">Send RSVP</span>
                         </button>
                     </div>
                 </form>
@@ -580,12 +580,12 @@
                 <div class="w-20 h-20 bg-amber-500/20 text-amber-300 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 glow-pulse">
                     <i class="fas fa-check"></i>
                 </div>
-                <h3 class="font-cinzel text-2xl font-bold text-amber-300 mb-2" data-i18n="successTitle">تم استلام تأكيدك!</h3>
+                <h3 class="font-cinzel text-2xl font-bold text-amber-300 mb-2" data-i18n="successTitle">RSVP Received!</h3>
                 <p class="text-slate-300 text-sm max-w-md mx-auto mb-6" data-i18n="successDesc">
-                    شكراً لك! ننتظر بشوق مشاركتك لنا في يومنا المميز.
+                    Thank you! We look forward to celebrating our special day with you.
                 </p>
                 <button onclick="resetRSVPForm()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 px-6 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all" data-i18n="btnResetRSVP">
-                    إرسال رد آخر
+                    Submit Another Response
                 </button>
             </div>
         </section>
@@ -593,16 +593,16 @@
         <!-- WISHES & MEMORY WALL -->
         <section class="py-24 px-4 max-w-5xl mx-auto">
             <div class="glass-card p-8 sm:p-12 rounded-3xl gsap-reveal">
-                <h3 class="font-cinzel text-2xl font-bold text-amber-300 text-center mb-6" data-i18n="wishesTitle">سجل التهاني والأمنيات</h3>
+                <h3 class="font-cinzel text-2xl font-bold text-amber-300 text-center mb-6" data-i18n="wishesTitle">Blessings & Wishes</h3>
 
                 <form onsubmit="submitWish(event)" class="max-w-2xl mx-auto space-y-4 mb-10">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <input type="text" id="wishAuthor" required placeholder="اسمك الكريم" class="bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none">
-                        <input type="text" id="wishRelation" placeholder="صلة القرابة (اختياري)" class="bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none">
+                        <input type="text" id="wishAuthor" required placeholder="Your Name" class="bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none">
+                        <input type="text" id="wishRelation" placeholder="Relation (Optional)" class="bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none">
                     </div>
-                    <textarea id="wishText" required rows="3" placeholder="اكتب تهنئتك المباركة لمهند وفريدة..." class="w-full bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none"></textarea>
+                    <textarea id="wishText" required rows="3" placeholder="Write your blessings for Mohanad & Farida..." class="w-full bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none"></textarea>
                     <button type="submit" class="shimmer-btn text-slate-950 font-bold px-8 py-3 rounded-full text-xs uppercase tracking-widest block mx-auto hover:scale-105 transition-transform">
-                        <span data-i18n="btnPostBlessing">نشر التهنئة</span>
+                        <span data-i18n="btnPostBlessing">Post Blessing</span>
                     </button>
                 </form>
 
@@ -616,7 +616,7 @@
         <footer class="py-12 px-4 text-center border-t border-amber-500/20">
             <div class="space-y-4">
                 <button onclick="shareWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-2.5 rounded-full text-xs uppercase tracking-wider inline-flex items-center gap-2 hover:scale-105 transition-all">
-                    <i class="fab fa-whatsapp text-base"></i> <span data-i18n="shareBtn">مشاركة الدعوة</span>
+                    <i class="fab fa-whatsapp text-base"></i> <span data-i18n="shareBtn">Share Invitation</span>
                 </button>
                 <p class="font-cursive text-3xl text-amber-200">#MohanadAndFarida2026</p>
             </div>
@@ -626,10 +626,10 @@
     <!-- MAP MODAL -->
     <div id="mapModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
         <div class="glass-card max-w-2xl w-full p-6 rounded-3xl relative border-2 border-amber-400">
-            <button onclick="closeMapModal()" class="absolute top-4 left-4 text-slate-400 hover:text-amber-300 text-xl">
+            <button onclick="closeMapModal()" class="absolute top-4 right-4 text-slate-400 hover:text-amber-300 text-xl">
                 <i class="fas fa-times"></i>
             </button>
-            <h3 class="font-cinzel text-xl text-amber-300 font-bold mb-4" data-i18n="venueName">فندق القصر الملكي</h3>
+            <h3 class="font-cinzel text-xl text-amber-300 font-bold mb-4" data-i18n="venueName">The Royal Palace Hotel</h3>
             <div class="w-full h-80 rounded-2xl overflow-hidden bg-slate-900">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.18131379796!2d31.2357116151152!3d30.04441998188241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145840c732626e23%3A0xb35a0f55e0c8b211!2sCairo%2C%20Egypt!5e0!3m2!1sen!2seg!4v1620000000000!5m2!1sen!2seg" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
             </div>
@@ -644,7 +644,7 @@
     <!-- JAVASCRIPT LOGIC & ANIMATION ENGINE -->
     <script>
         /* 0. MULTI-LANGUAGE ENGINE */
-        let currentLang = 'ar';
+        let currentLang = 'en';
 
         const i18nData = {
             en: {
@@ -797,15 +797,16 @@
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
                     
+                    // Set CSS Custom Properties for Spotlight Reflection
                     card.style.setProperty('--mouse-x', `${x}px`);
                     card.style.setProperty('--mouse-y', `${y}px`);
 
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -6;
-                    const rotateY = ((x - centerX) / centerX) * 6;
+                    const rotateX = ((y - centerY) / centerY) * -8;
+                    const rotateY = ((x - centerX) / centerX) * 8;
 
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
                 });
 
                 card.addEventListener('mouseleave', () => {
@@ -906,7 +907,7 @@
         window.addEventListener('wheel', () => { if (isAutoScrolling) toggleAutoScroll(); }, { passive: true });
         window.addEventListener('touchmove', () => { if (isAutoScrolling) toggleAutoScroll(); }, { passive: true });
 
-        /* 4. PERFECTED & FIXED DOOR UNLOCK LOGIC */
+        /* 4. UPGRADED ENTRANCE DOOR UNLOCK LOGIC */
         function openInvitationDoors() {
             playAudio();
 
@@ -915,12 +916,12 @@
             const lockCenter = document.getElementById('doorLockCenter');
             const doorGlow = document.getElementById('doorGlow');
 
-            // 1. Hide unlock button with scale animation
+            // 1. Animate Seal Scale Down & Glow Fade In
             gsap.to(lockCenter, { 
-                scale: 0.1, 
+                scale: 0.2, 
                 opacity: 0, 
-                duration: 0.5, 
-                ease: "power2.in" 
+                duration: 0.7, 
+                ease: "back.in(2)" 
             });
 
             if (doorGlow) {
@@ -928,24 +929,23 @@
                 doorGlow.classList.add('opacity-100');
             }
 
-            // 2. Open Doors Smoothly
+            // 2. Open Doors with Cinematic Spring
             setTimeout(() => {
                 overlay.classList.add('doors-open');
                 mainContent.classList.remove('opacity-0');
-            }, 300);
+            }, 400);
 
-            // 3. Complete fade out and disable overlay completely
+            // 3. Smooth Fade Out Overlay
             setTimeout(() => {
                 gsap.to(overlay, {
                     opacity: 0,
                     duration: 0.8,
                     onComplete: () => {
                         overlay.style.display = 'none';
-                        overlay.style.pointerEvents = 'none';
                         if (!isAutoScrolling) toggleAutoScroll();
                     }
                 });
-            }, 2000);
+            }, 2200);
         }
 
         /* 5. INTERACTIVE PARTICLES CANVAS ENGINE */
@@ -967,7 +967,7 @@
             reset() {
                 this.x = Math.random() * canvas.width;
                 this.y = -20;
-                this.size = Math.random() * 5 + 2;
+                this.size = Math.random() * 6 + 3;
                 this.speedY = Math.random() * 1.2 + 0.6;
                 this.speedX = Math.random() * 0.8 - 0.4;
                 this.opacity = Math.random() * 0.7 + 0.3;
@@ -980,10 +980,11 @@
                 this.x += Math.sin(this.y * 0.01) + this.speedX;
                 this.angle += this.spin;
 
+                // Mouse Repulsion Effect
                 const dx = mouseX - this.x;
                 const dy = mouseY - this.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 100) {
+                if (dist < 120) {
                     this.x -= (dx / dist) * 2;
                     this.y -= (dy / dist) * 2;
                 }
@@ -1009,7 +1010,7 @@
                 ctx.restore();
             }
         }
-        for (let i = 0; i < 45; i++) particles.push(new Particle());
+        for (let i = 0; i < 55; i++) particles.push(new Particle());
 
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
