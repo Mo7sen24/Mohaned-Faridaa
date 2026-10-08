@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohanad & Farida - Royal Wedding Invitation</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS Styles -->
+    <style>
+        :root {
+            --gold-primary: #d4af37;
+            --gold-light: #f3e5ab;
+            --gold-dark: #aa7c11;
+            --navy-dark: #050a14;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--navy-dark);
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .font-serif-title { font-family: 'Playfair Display', serif; }
+        .font-cursive { font-family: 'Great Vibes', cursive; }
+        .font-cinzel { font-family: 'Cinzel Decorative', serif; }
+
+        /* Gold Gradient Text */
+        .text-gold-gradient {
+            background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa7c11 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.1);
+        }
+
+        /* 3D Door Perspective Setup */
+        .door-container {
+            perspective: 2000px;
+        }
+
+        .door-left {
+            transform-origin: left center;
+            transition: transform 2.2s cubic-bezier(0.7, 0, 0.2, 1);
+        }
+
+        .door-right {
+            transform-origin: right center;
+            transition: transform 2.2s cubic-bezier(0.7, 0, 0.2, 1);
+        }
+
+        .doors-open .door-left {
+            transform: rotateY(-110deg);
+        }
+
+        .doors-open .door-right {
+            transform: rotateY(110deg);
+        }
+
+        /* Envelope Flying Animation */
+        @keyframes foldAndFly {
+            0% { transform: scale(1) translateY(0) rotate(0deg); opacity: 1; }
+            30% { transform: scale(0.9) translateY(20px) rotate(-5deg); }
+            100% { transform: scale(0.2) translateY(-1200px) rotate(25deg); opacity: 0; }
+        }
+
+        .animate-envelope-fly {
+            animation: foldAndFly 1.8s ease-in-out forwards;
+        }
+
+        /* Glowing Pulse Effect */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.4), inset 0 0 15px rgba(212, 175, 55, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.8), inset 0 0 25px rgba(212, 175, 55, 0.5); }
+        }
+
+        .glow-pulse { animation: pulseGlow 3s infinite ease-in-out; }
+
+        /* Shimmer Button */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .shimmer-btn {
+            background: linear-gradient(90deg, #aa7c11 0%, #fcf6ba 50%, #aa7c11 100%);
+            background-size: 200% 100%;
+            animation: shimmer 4s infinite linear;
+        }
+
+        /* Scroll Reveal Utility */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Equalizer Animation */
+        @keyframes eqBar {
+            0%, 100% { height: 4px; }
+            50% { height: 16px; }
+        }
+
+        .eq-animating {
+            animation: eqBar 0.8s infinite ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050a14; }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+            border: 1px solid #d4af37;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: #d4af37; }
+    </style>
+</head>
+<body class="relative min-h-screen text-slate-100 selection:bg-amber-500 selection:text-slate-950">
+
+    <!-- Falling Petals & Gold Particles Canvas -->
+    <canvas id="particlesCanvas" class="fixed inset-0 pointer-events-none z-10 w-full h-full"></canvas>
+
+    <!-- HTML5 Audio Element for Romantic Instrumental Music -->
+    <audio id="weddingAudio" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112199.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b9812739.mp3?filename=romantic-piano-wedding-10118.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- FIXED CONTROLS BAR (MUSIC & AUTO-SCROLL CONTROLLERS) -->
+    <div id="topWidgetBar" class="fixed bottom-6 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:top-6 sm:bottom-auto sm:right-6 z-40 flex items-center gap-3 bg-slate-950/90 backdrop-blur-xl border border-amber-500/50 p-2 sm:p-2.5 rounded-full shadow-2xl">
+        
+        <!-- AUTO-SCROLL TOGGLE -->
+        <button id="toggleAutoScrollBtn" onclick="toggleAutoScroll()" class="flex items-center gap-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3.5 py-1.5 rounded-full transition-all text-xs font-semibold uppercase tracking-wider">
+            <i id="autoScrollIcon" class="fas fa-play text-[11px]"></i>
+            <span id="autoScrollStatusText">Auto-Scroll</span>
+        </button>
+
+        <!-- SPEED SELECTOR -->
+        <select id="autoScrollSpeed" onchange="changeAutoScrollSpeed(this.value)" class="bg-slate-900 text-amber-300 text-xs font-semibold rounded-full border border-amber-500/30 px-2.5 py-1 focus:outline-none">
+            <option value="0.8">Slow</option>
+            <option value="1.5" selected>Normal</option>
+            <option value="2.8">Fast</option>
+        </select>
+
+        <div class="h-4 w-px bg-amber-500/30"></div>
+
+        <!-- AMBIENT MUSIC TOGGLE -->
+        <button id="toggleAudioBtn" onclick="toggleAudio()" class="flex items-center gap-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3.5 py-1.5 rounded-full transition-all text-xs font-semibold uppercase tracking-wider">
+            <div id="equalizer" class="flex items-end gap-0.5 h-4 w-4">
+                <span class="eq-bar w-1 bg-amber-400 rounded-full h-1"></span>
+                <span class="eq-bar w-1 bg-amber-400 rounded-full h-2"></span>
+                <span class="eq-bar w-1 bg-amber-400 rounded-full h-1"></span>
+            </div>
+            <i id="audioIcon" class="fas fa-music text-[11px]"></i>
+            <span id="audioStatusText" class="hidden sm:inline">Music</span>
+        </button>
+
+        <div class="h-4 w-px bg-amber-500/30"></div>
+
+        <!-- QUICK JUMP BUTTON -->
+        <a href="#rsvp" class="bg-amber-400 text-slate-950 font-bold px-3.5 py-1.5 rounded-full text-xs uppercase tracking-wider hover:bg-amber-300 transition-all">
+            RSVP
+        </a>
+    </div>
+
+    <!-- GRAND ENTRANCE DOORS OVERLAY -->
+    <div id="entranceOverlay" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-slate-950 door-container">
+        <!-- Left Door -->
+        <div id="doorLeft" class="door-left absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/40 border-r-4 border-amber-500/60 flex items-center justify-end pr-4 sm:pr-12 shadow-2xl z-20">
+            <div class="w-full max-w-md h-5/6 border-2 border-amber-500/30 rounded-lg p-6 flex flex-col justify-between bg-slate-900/50 relative overflow-hidden">
+                <div class="w-full h-full border border-amber-500/20 rounded flex items-center justify-center">
+                    <i class="fas fa-crown text-amber-500/20 text-6xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Door -->
+        <div id="doorRight" class="door-right absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-slate-950 via-slate-900 to-amber-950/40 border-l-4 border-amber-500/60 flex items-center justify-start pl-4 sm:pl-12 shadow-2xl z-20">
+            <div class="w-full max-w-md h-5/6 border-2 border-amber-500/30 rounded-lg p-6 flex flex-col justify-between bg-slate-900/50 relative overflow-hidden">
+                <div class="w-full h-full border border-amber-500/20 rounded flex items-center justify-center">
+                    <i class="fas fa-heart text-amber-500/20 text-6xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Unlock Seal & Button -->
+        <div id="doorLockCenter" class="absolute z-30 flex flex-col items-center justify-center text-center p-6 transition-all duration-700">
+            <div class="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-slate-900/95 border-2 border-amber-400 glow-pulse flex flex-col items-center justify-center shadow-2xl mb-8 relative">
+                <div class="absolute inset-2 rounded-full border border-amber-300/40 border-dashed animate-spin" style="animation-duration: 25s;"></div>
+                <span class="font-cinzel text-amber-300 font-bold text-lg sm:text-2xl tracking-widest">M & F</span>
+                <span class="text-[10px] text-amber-200 uppercase tracking-widest mt-1">20.11.2026</span>
+            </div>
+
+            <button onclick="openInvitationDoors()" class="shimmer-btn text-slate-950 font-bold px-8 py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 text-sm sm:text-base tracking-widest uppercase flex items-center gap-3 group">
+                <i class="fas fa-key text-slate-900 group-hover:rotate-45 transition-transform duration-300"></i>
+                <span>Open Royal Invitation</span>
+            </button>
+            <p class="text-xs text-amber-200/80 tracking-widest uppercase mt-4 animate-pulse">Tap to enter with music & auto-scroll</p>
+        </div>
+    </div>
+
+    <!-- MAIN INVITATION CONTENT -->
+    <div id="mainContent" class="relative z-20 opacity-0 transition-opacity duration-1000 pb-24">
+
+        <!-- HERO SECTION -->
+        <section class="min-h-screen flex flex-col items-center justify-center text-center px-4 py-20 relative overflow-hidden">
+            <div class="max-w-4xl mx-auto z-10">
+                <div class="inline-block mb-4 px-6 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs sm:text-sm tracking-[0.3em] uppercase">
+                    The Wedding Celebration Of
+                </div>
+
+                <h1 class="font-cinzel text-4xl sm:text-7xl lg:text-8xl font-black text-gold-gradient my-6 leading-tight tracking-wider drop-shadow-2xl">
+                    Mohanad <span class="font-cursive text-amber-200 font-normal text-5xl sm:text-8xl lg:text-9xl block sm:inline my-2 sm:my-0">&</span> Farida
+                </h1>
+
+                <p class="font-serif-title italic text-lg sm:text-2xl text-slate-300 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                    "Together with their families, they joyfully request the pleasure of your company to celebrate their love and marriage."
+                </p>
+
+                <div class="inline-flex items-center gap-3 bg-slate-900/80 border border-amber-500/40 px-6 py-3 rounded-full text-amber-300 font-semibold text-sm sm:text-base tracking-wider mb-12 shadow-lg">
+                    <i class="far fa-calendar-alt text-amber-400"></i>
+                    <span>Friday, November 20, 2026</span>
+                </div>
+
+                <!-- Live Countdown Timer -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto">
+                    <div class="glass-card p-4 rounded-2xl flex flex-col items-center">
+                        <span id="cd-days" class="font-cinzel text-3xl sm:text-4xl font-bold text-amber-300">00</span>
+                        <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest mt-1">Days</span>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl flex flex-col items-center">
+                        <span id="cd-hours" class="font-cinzel text-3xl sm:text-4xl font-bold text-amber-300">00</span>
+                        <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest mt-1">Hours</span>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl flex flex-col items-center">
+                        <span id="cd-minutes" class="font-cinzel text-3xl sm:text-4xl font-bold text-amber-300">00</span>
+                        <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest mt-1">Minutes</span>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl flex flex-col items-center">
+                        <span id="cd-seconds" class="font-cinzel text-3xl sm:text-4xl font-bold text-amber-300">00</span>
+                        <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest mt-1">Seconds</span>
+                    </div>
+                </div>
+
+                <a href="#our-story" class="inline-block mt-16 text-amber-400/70 hover:text-amber-300 transition-colors animate-bounce">
+                    <i class="fas fa-chevron-down text-2xl"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- OUR LOVE STORY SECTION -->
+        <section id="our-story" class="py-24 px-4 max-w-5xl mx-auto relative">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-cursive text-5xl sm:text-6xl text-amber-300 mb-2">Our Love Story</h2>
+                <p class="font-cinzel text-xs sm:text-sm tracking-[0.3em] uppercase text-slate-400">Two Souls, One Journey</p>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-4"></div>
+            </div>
+
+            <div class="relative border-l-2 border-amber-500/30 ml-4 md:ml-0 md:mx-auto md:max-w-3xl space-y-12">
+                <!-- Story Item 1 -->
+                <div class="relative pl-8 md:pl-0 md:flex md:items-center group reveal">
+                    <div class="absolute -left-[17px] md:left-1/2 md:-translate-x-1/2 top-0 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-300 z-10 shadow-lg">
+                        <i class="fas fa-compass text-xs"></i>
+                    </div>
+                    <div class="md:w-1/2 md:pr-12 md:text-right">
+                        <div class="glass-card p-6 rounded-2xl hover:border-amber-400/50 transition-all">
+                            <span class="text-amber-400 font-cinzel text-xs font-bold tracking-widest uppercase">Spring 2022</span>
+                            <h3 class="font-serif-title text-xl text-amber-200 font-semibold my-1">First Glance</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                A serendipitous encounter turned into hours of effortless conversations. Mohanad knew instantly Farida was one of a kind.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Story Item 2 -->
+                <div class="relative pl-8 md:pl-0 md:flex md:items-center md:flex-row-reverse group reveal">
+                    <div class="absolute -left-[17px] md:left-1/2 md:-translate-x-1/2 top-0 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-300 z-10 shadow-lg">
+                        <i class="fas fa-gem text-xs"></i>
+                    </div>
+                    <div class="md:w-1/2 md:pl-12 md:text-left">
+                        <div class="glass-card p-6 rounded-2xl hover:border-amber-400/50 transition-all">
+                            <span class="text-amber-400 font-cinzel text-xs font-bold tracking-widest uppercase">Autumn 2025</span>
+                            <h3 class="font-serif-title text-xl text-amber-200 font-semibold my-1">The Proposal</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Under a starlit shore, Mohanad popped the question. Farida happily said YES to a lifetime together!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Story Item 3 -->
+                <div class="relative pl-8 md:pl-0 md:flex md:items-center group reveal">
+                    <div class="absolute -left-[17px] md:left-1/2 md:-translate-x-1/2 top-0 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-300 z-10 shadow-lg">
+                        <i class="fas fa-ring text-xs"></i>
+                    </div>
+                    <div class="md:w-1/2 md:pr-12 md:text-right">
+                        <div class="glass-card p-6 rounded-2xl hover:border-amber-400/50 transition-all">
+                            <span class="text-amber-400 font-cinzel text-xs font-bold tracking-widest uppercase">November 20, 2026</span>
+                            <h3 class="font-serif-title text-xl text-amber-200 font-semibold my-1">The Royal Wedding</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Gathering our loved ones to celebrate the beginning of our forever story.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EVENT SCHEDULE & LOCATION -->
+        <section class="py-24 px-4 bg-slate-900/40 border-y border-amber-500/10 relative">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="font-cinzel text-3xl sm:text-4xl text-gold-gradient font-bold tracking-wider">The Celebration Details</h2>
+                    <p class="text-slate-400 text-sm mt-2">Program & Venue Location</p>
+                    <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-4"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                    <!-- Venue -->
+                    <div class="glass-card p-8 rounded-3xl flex flex-col justify-between reveal">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-300 text-2xl mb-6">
+                                <i class="fas fa-hotel"></i>
+                            </div>
+                            <span class="text-amber-400 font-cinzel text-xs tracking-widest uppercase font-bold">Venue</span>
+                            <h3 class="font-serif-title text-2xl text-slate-100 font-bold mt-1 mb-4">The Royal Palace Hotel</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                                <i class="fas fa-map-marker-alt text-amber-400 mr-2"></i>
+                                The Grand Ballroom, Royal Boulevard, Cairo, Egypt
+                            </p>
+                        </div>
+
+                        <div class="flex flex-wrap gap-4 pt-4 border-t border-slate-800">
+                            <button onclick="openMapModal()" class="shimmer-btn text-slate-950 font-bold px-6 py-3 rounded-full text-xs uppercase tracking-wider flex items-center gap-2 hover:scale-105 transition-all">
+                                <i class="fas fa-map-marked-alt"></i> Google Maps
+                            </button>
+                            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Mohanad+%26+Farida+Wedding&dates=20261120T160000Z/20261120T220000Z" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 px-6 py-3 rounded-full text-xs uppercase tracking-wider flex items-center gap-2 transition-all">
+                                <i class="far fa-calendar-plus"></i> Add Calendar
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Evening Timeline -->
+                    <div class="glass-card p-8 rounded-3xl reveal">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-300 text-2xl mb-6">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <span class="text-amber-400 font-cinzel text-xs tracking-widest uppercase font-bold">Schedule</span>
+                        <h3 class="font-serif-title text-2xl text-slate-100 font-bold mt-1 mb-6">Evening Timeline</h3>
+
+                        <ul class="space-y-6">
+                            <li class="flex items-start gap-4">
+                                <span class="bg-amber-500/20 text-amber-300 text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-500/30 font-cinzel">06:00 PM</span>
+                                <div>
+                                    <h4 class="text-slate-100 text-sm font-semibold">Welcome Drinks & Reception</h4>
+                                    <p class="text-xs text-slate-400">Cocktails and string quartet performance.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="bg-amber-500/20 text-amber-300 text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-500/30 font-cinzel">07:00 PM</span>
+                                <div>
+                                    <h4 class="text-slate-100 text-sm font-semibold">Wedding Ceremony & Zaffe</h4>
+                                    <p class="text-xs text-slate-400">Processional entrance of bride and groom.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="bg-amber-500/20 text-amber-300 text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-500/30 font-cinzel">08:30 PM</span>
+                                <div>
+                                    <h4 class="text-slate-100 text-sm font-semibold">Gala Dinner</h4>
+                                    <p class="text-xs text-slate-400">Multi-course dinner buffet & wedding cake cutting.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DRESS CODE SECTION -->
+        <section class="py-20 px-4 max-w-4xl mx-auto text-center reveal">
+            <div class="glass-card p-8 sm:p-12 rounded-3xl">
+                <h2 class="font-cinzel text-2xl sm:text-3xl text-gold-gradient font-bold tracking-wider mb-2">Dress Code</h2>
+                <p class="font-serif-title italic text-amber-200 text-lg mb-8">"Black Tie & Royal Elegance"</p>
+
+                <div class="flex items-center justify-center gap-6">
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="w-12 h-12 rounded-full bg-slate-950 border-2 border-amber-400 shadow-md"></div>
+                        <span class="text-[10px] text-slate-400 uppercase tracking-widest">Black</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="w-12 h-12 rounded-full bg-amber-400 border-2 border-amber-200 shadow-md"></div>
+                        <span class="text-[10px] text-slate-400 uppercase tracking-widest">Gold</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="w-12 h-12 rounded-full bg-emerald-950 border-2 border-emerald-500/40 shadow-md"></div>
+                        <span class="text-[10px] text-slate-400 uppercase tracking-widest">Emerald</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RSVP FORM SECTION -->
+        <section id="rsvp" class="py-24 px-4 max-w-3xl mx-auto relative">
+            <div class="text-center mb-12 reveal">
+                <h2 class="font-cursive text-5xl sm:text-6xl text-amber-300 mb-2">Kindly RSVP</h2>
+                <p class="font-cinzel text-xs sm:text-sm tracking-[0.3em] uppercase text-slate-400">Please respond before November 1st, 2026</p>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-4"></div>
+            </div>
+
+            <div id="envelopeContainer" class="glass-card p-8 sm:p-12 rounded-3xl border-2 border-amber-500/40 shadow-2xl relative transition-all duration-700 reveal">
+                <form id="rsvpForm" onsubmit="handleRSVPSubmit(event)" class="space-y-6">
+                    <div>
+                        <label class="block text-xs uppercase tracking-widest text-amber-300 font-bold mb-2">Full Name *</label>
+                        <input type="text" required placeholder="e.g. Mr. & Mrs. Smith" class="w-full bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs uppercase tracking-widest text-amber-300 font-bold mb-2">Attendance *</label>
+                            <select required class="w-full bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none">
+                                <option value="accepts">Joyfully Accepts</option>
+                                <option value="declines">Regretfully Declines</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-widest text-amber-300 font-bold mb-2">Number of Guests</label>
+                            <select class="w-full bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none">
+                                <option value="1">1 Person</option>
+                                <option value="2">2 Persons (+1)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs uppercase tracking-widest text-amber-300 font-bold mb-2">Song Request / Special Note</label>
+                        <textarea rows="3" placeholder="Suggest a song for the DJ..." class="w-full bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none"></textarea>
+                    </div>
+
+                    <div class="text-center pt-4">
+                        <button type="submit" class="shimmer-btn text-slate-950 font-bold px-10 py-4 rounded-full shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 text-sm uppercase tracking-widest flex items-center gap-3 mx-auto">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Send RSVP</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- RSVP Confirmation Box -->
+            <div id="rsvpSuccessBox" class="hidden glass-card p-10 rounded-3xl text-center border-2 border-amber-400">
+                <div class="w-20 h-20 bg-amber-500/20 text-amber-300 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 glow-pulse">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 class="font-cinzel text-2xl font-bold text-amber-300 mb-2">RSVP Received!</h3>
+                <p class="text-slate-300 text-sm max-w-md mx-auto mb-6">
+                    Thank you! We look forward to celebrating our special day with you.
+                </p>
+                <button onclick="resetRSVPForm()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 px-6 py-2.5 rounded-full text-xs uppercase tracking-wider">
+                    Submit Another Response
+                </button>
+            </div>
+        </section>
+
+        <!-- WISHES & MEMORY WALL -->
+        <section class="py-24 px-4 max-w-5xl mx-auto">
+            <div class="glass-card p-8 sm:p-12 rounded-3xl reveal">
+                <h3 class="font-cinzel text-2xl font-bold text-amber-300 text-center mb-6">Blessings & Wishes</h3>
+
+                <form onsubmit="submitWish(event)" class="max-w-2xl mx-auto space-y-4 mb-10">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <input type="text" id="wishAuthor" required placeholder="Your Name" class="bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none">
+                        <input type="text" id="wishRelation" placeholder="Relation (Optional)" class="bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none">
+                    </div>
+                    <textarea id="wishText" required rows="3" placeholder="Write your blessings for Mohanad & Farida..." class="w-full bg-slate-900/90 border border-slate-700 focus:border-amber-400 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none"></textarea>
+                    <button type="submit" class="shimmer-btn text-slate-950 font-bold px-8 py-3 rounded-full text-xs uppercase tracking-widest block mx-auto">
+                        Post Blessing
+                    </button>
+                </form>
+
+                <div id="wishesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[350px] overflow-y-auto pr-2">
+                    <!-- Loaded dynamically via LocalStorage -->
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="py-12 px-4 text-center border-t border-amber-500/20">
+            <div class="space-y-4">
+                <button onclick="shareWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-2.5 rounded-full text-xs uppercase tracking-wider inline-flex items-center gap-2">
+                    <i class="fab fa-whatsapp text-base"></i> Share Invitation
+                </button>
+                <p class="font-cursive text-3xl text-amber-200">#MohanadAndFarida2026</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- MAP MODAL -->
+    <div id="mapModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+        <div class="glass-card max-w-2xl w-full p-6 rounded-3xl relative border-2 border-amber-400">
+            <button onclick="closeMapModal()" class="absolute top-4 right-4 text-slate-400 hover:text-amber-300 text-xl">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="font-cinzel text-xl text-amber-300 font-bold mb-4">The Royal Palace Hotel</h3>
+            <div class="w-full h-80 rounded-2xl overflow-hidden bg-slate-900">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.18131379796!2d31.2357116151152!3d30.04441998188241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145840c732626e23%3A0xb35a0f55e0c8b211!2sCairo%2C%20Egypt!5e0!3m2!1sen!2seg!4v1620000000000!5m2!1sen!2seg" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC ENGINE -->
+    <script>
+        /* 1. AUDIO PLAYBACK ENGINE (FIXED BROWSER AUTOPLAY) */
+        const audioElement = document.getElementById('weddingAudio');
+        let isAudioPlaying = false;
+
+        function playAudio() {
+            if (!audioElement) return;
+            audioElement.play().then(() => {
+                isAudioPlaying = true;
+                updateAudioUI(true);
+            }).catch(err => {
+                console.log("Audio playback waiting for gesture fallback:", err);
+                // Web Audio Fallback if MP3 stream is blocked
+                startAudioSynth();
+            });
+        }
+
+        function toggleAudio() {
+            if (!audioElement) return;
+            if (isAudioPlaying) {
+                audioElement.pause();
+                isAudioPlaying = false;
+                updateAudioUI(false);
+            } else {
+                playAudio();
+            }
+        }
+
+        function updateAudioUI(playing) {
+            const icon = document.getElementById('audioIcon');
+            const text = document.getElementById('audioStatusText');
+            const eqBars = document.querySelectorAll('.eq-bar');
+
+            if (playing) {
+                icon.className = "fas fa-volume-up text-[11px]";
+                text.innerText = "Playing";
+                eqBars.forEach(bar => bar.classList.add('eq-animating'));
+            } else {
+                icon.className = "fas fa-volume-mute text-[11px] text-slate-400";
+                text.innerText = "Muted";
+                eqBars.forEach(bar => bar.classList.remove('eq-animating'));
+            }
+        }
+
+        /* WEB AUDIO SYNTHESIZER FALLBACK */
+        let audioCtx = null;
+        function startAudioSynth() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!audioCtx) audioCtx = new AudioContext();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                isAudioPlaying = true;
+                updateAudioUI(true);
+            } catch(e) {}
+        }
+
+
+        /* 2. AUTO-SCROLL ENGINE (RELIABLE CONTINUOUS LOOP) */
+        let isAutoScrolling = false;
+        let scrollSpeed = 1.5; // pixels per step
+        let scrollAnimationFrame = null;
+
+        function toggleAutoScroll() {
+            isAutoScrolling = !isAutoScrolling;
+            updateAutoScrollUI();
+
+            if (isAutoScrolling) {
+                stepAutoScroll();
+            } else if (scrollAnimationFrame) {
+                cancelAnimationFrame(scrollAnimationFrame);
+            }
+        }
+
+        function changeAutoScrollSpeed(val) {
+            scrollSpeed = parseFloat(val);
+        }
+
+        function updateAutoScrollUI() {
+            const icon = document.getElementById('autoScrollIcon');
+            const text = document.getElementById('autoScrollStatusText');
+            if (isAutoScrolling) {
+                icon.className = "fas fa-pause text-[11px]";
+                text.innerText = "Pause";
+            } else {
+                icon.className = "fas fa-play text-[11px]";
+                text.innerText = "Auto-Scroll";
+            }
+        }
+
+        function stepAutoScroll() {
+            if (!isAutoScrolling) return;
+
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            
+            if (window.scrollY >= maxScroll - 5) {
+                // Loop gently back to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setTimeout(() => {
+                    if (isAutoScrolling) stepAutoScroll();
+                }, 2500);
+                return;
+            }
+
+            window.scrollBy(0, scrollSpeed);
+            scrollAnimationFrame = requestAnimationFrame(stepAutoScroll);
+        }
+
+        /* 3. ENTRANCE DOOR UNLOCK LOGIC */
+        function openInvitationDoors() {
+            // Trigger audio immediately on explicit gesture
+            playAudio();
+
+            const overlay = document.getElementById('entranceOverlay');
+            const mainContent = document.getElementById('mainContent');
+            const lockCenter = document.getElementById('doorLockCenter');
+
+            lockCenter.style.opacity = '0';
+            lockCenter.style.transform = 'scale(0.5)';
+
+            setTimeout(() => {
+                overlay.classList.add('doors-open');
+                mainContent.classList.remove('opacity-0');
+            }, 300);
+
+            setTimeout(() => {
+                overlay.style.pointerEvents = 'none';
+                overlay.style.opacity = '0';
+
+                // Automatically start auto-scroll right after doors open
+                if (!isAutoScrolling) {
+                    toggleAutoScroll();
+                }
+            }, 2100);
+        }
+
+
+        /* 4. FALLING PETALS CANVAS */
+        const canvas = document.getElementById('particlesCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = -20;
+                this.size = Math.random() * 6 + 3;
+                this.speedY = Math.random() * 1.2 + 0.5;
+                this.speedX = Math.random() * 0.8 - 0.4;
+                this.opacity = Math.random() * 0.7 + 0.3;
+                this.isGold = Math.random() > 0.4;
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += Math.sin(this.y * 0.01) + this.speedX;
+                if (this.y > canvas.height + 20) this.reset();
+            }
+            draw() {
+                ctx.beginPath();
+                if (this.isGold) {
+                    ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                    ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
+                } else {
+                    ctx.fillStyle = `rgba(244, 114, 182, ${this.opacity * 0.6})`;
+                    ctx.ellipse(this.x, this.y, this.size, this.size / 2, 0, 0, Math.PI * 2);
+                }
+                ctx.fill();
+            }
+        }
+        for (let i = 0; i < 40; i++) particles.push(new Particle());
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        /* 5. COUNTDOWN TIMER */
+        const targetDate = new Date("November 20, 2026 18:00:00").getTime();
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff > 0) {
+                document.getElementById('cd-days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                document.getElementById('cd-hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                document.getElementById('cd-minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                document.getElementById('cd-seconds').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        /* 6. SCROLL REVEAL ANIMATIONS */
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 80) {
+                    el.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        /* 7. RSVP FORM SUBMISSION */
+        function handleRSVPSubmit(e) {
+            e.preventDefault();
+            const container = document.getElementById('envelopeContainer');
+            container.classList.add('animate-envelope-fly');
+
+            setTimeout(() => {
+                container.classList.add('hidden');
+                container.classList.remove('animate-envelope-fly');
+                document.getElementById('rsvpSuccessBox').classList.remove('hidden');
+            }, 1600);
+        }
+
+        function resetRSVPForm() {
+            document.getElementById('rsvpForm').reset();
+            document.getElementById('rsvpSuccessBox').classList.add('hidden');
+            document.getElementById('envelopeContainer').classList.remove('hidden');
+        }
+
+        /* 8. LOCALSTORAGE WISHES WALL */
+        function loadWishes() {
+            const wishesGrid = document.getElementById('wishesGrid');
+            const savedWishes = JSON.parse(localStorage.getItem('mf_wedding_wishes') || '[]');
+
+            const defaultWishes = [
+                { author: "Youssef & Sarah", relation: "Best Friends", text: "Wishing you a lifetime filled with love and endless joy!" },
+                { author: "Aunt Layla", relation: "Family", text: "May your journey together be blessed with endless happiness." }
+            ];
+
+            const allWishes = [...savedWishes, ...defaultWishes];
+            wishesGrid.innerHTML = allWishes.map(w => `
+                <div class="bg-slate-900/80 border border-amber-500/20 p-4 rounded-2xl">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-amber-300 font-semibold text-sm">${escapeHTML(w.author)}</span>
+                        <span class="text-[10px] text-slate-500 uppercase">${escapeHTML(w.relation || 'Guest')}</span>
+                    </div>
+                    <p class="text-slate-300 text-xs italic">"${escapeHTML(w.text)}"</p>
+                </div>
+            `).join('');
+        }
+
+        function submitWish(e) {
+            e.preventDefault();
+            const author = document.getElementById('wishAuthor').value.trim();
+            const relation = document.getElementById('wishRelation').value.trim();
+            const text = document.getElementById('wishText').value.trim();
+
+            if (!author || !text) return;
+
+            const savedWishes = JSON.parse(localStorage.getItem('mf_wedding_wishes') || '[]');
+            savedWishes.unshift({ author, relation, text });
+            localStorage.setItem('mf_wedding_wishes', JSON.stringify(savedWishes));
+
+            loadWishes();
+            document.getElementById('wishAuthor').value = '';
+            document.getElementById('wishRelation').value = '';
+            document.getElementById('wishText').value = '';
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        }
+
+        function shareWhatsApp() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent("You are invited to the Royal Wedding of Mohanad & Farida! 💍✨");
+            window.open(`https://api.whatsapp.com/send?text=${text}%20${url}`, '_blank');
+        }
+
+        function openMapModal() { document.getElementById('mapModal').classList.remove('hidden'); }
+        function closeMapModal() { document.getElementById('mapModal').classList.add('hidden'); }
+
+        document.addEventListener('DOMContentLoaded', loadWishes);
+    </script>
+</body>
+</html>
